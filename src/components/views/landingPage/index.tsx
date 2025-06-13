@@ -39,12 +39,12 @@ const LandingPageView = () => {
     <div className="min-h-screen bg-gray-950 overflow-x-hidden">
       <Sidebar />
       
-      <main className="relative px-4 sm:px-6 md:px-12 lg:px-24 py-16 md:py-20 mx-auto max-w-screen-2xl">
+      <main className="relative px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 py-12 sm:py-16 md:py-20 mx-auto max-w-screen-2xl">
         {/* Enhanced Background effects with animations */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
           {/* Animated glowing orbs */}
-          <div className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-purple-500 rounded-full filter blur-3xl opacity-10 animate-float"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-96 md:h-96 bg-blue-500 rounded-full filter blur-3xl opacity-10 animate-float-delayed"></div>
+          <div className="absolute top-1/4 left-1/4 w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 lg:w-96 lg:h-96 bg-purple-500 rounded-full filter blur-3xl opacity-10 animate-float"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 lg:w-96 lg:h-96 bg-blue-500 rounded-full filter blur-3xl opacity-10 animate-float-delayed"></div>
           
           {/* Animated particles */}
           <div className="absolute inset-0">
@@ -66,50 +66,52 @@ const LandingPageView = () => {
           <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
           
           {/* Gradient at the top */}
-          <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-blue-500/10 to-transparent"></div>
+          <div className="absolute top-0 left-0 right-0 h-24 sm:h-32 bg-gradient-to-b from-blue-500/10 to-transparent"></div>
         </div>
         
         {/* Scroll indicator */}
-        <div className={`fixed bottom-8 left-1/2 transform -translate-x-1/2 text-white animate-bounce transition-opacity duration-500 ${scrolled ? 'opacity-0' : 'opacity-100'}`}>
+        <div className={`fixed inset-x-0 bottom-6 sm:bottom-8 flex justify-center text-white transition-all duration-500 z-50 ${scrolled ? 'opacity-0 translate-y-2 pointer-events-none' : 'opacity-100 translate-y-0 animate-bounce'}`}>
           <div className="flex flex-col items-center">
-            <span className="text-sm mb-2 text-gray-400">Scroll down</span>
-            <FaChevronDown />
+            <span className="text-xs sm:text-sm mb-1 sm:mb-2 text-gray-400 animate-pulse">
+              Scroll down
+            </span>
+            <FaChevronDown className="text-lg sm:text-xl" />
           </div>
         </div>
 
         {/* Hero Section with entrance animations */}
-        <section id="home" className="min-h-screen flex flex-col md:flex-row items-center justify-between relative z-10 pt-10 md:pt-0">
+        <section id="home" className="min-h-[85vh] sm:min-h-[90vh] flex flex-col md:flex-row items-center justify-center md:justify-between relative z-10 pt-16 sm:pt-20 md:pt-0 px-4 sm:px-6">
           {/* Left Content - Text */}
-          <div className={`w-full md:w-3/5 lg:w-2/5 text-white mb-12 md:mb-0 order-2 md:order-1 mt-8 md:mt-0 transition-all duration-1000 ${mounted ? 'animate-slide-in-left' : 'opacity-0 translate-x-[-50px]'}`}>
+          <div className={`w-full md:w-3/5 lg:w-2/5 text-white mb-10 sm:mb-12 md:mb-0 order-2 md:order-1 mt-6 sm:mt-8 md:mt-0 transition-all duration-1000 ${mounted ? 'animate-slide-in-left' : 'opacity-0 translate-x-[-50px]'}`}>
             {/* Replace static greeting with animated MultiLanguageGreeting component */}
             <MultiLanguageGreeting />
           
             {/* Name section with better responsive text sizing */}
-            <div className="mb-4">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight animate-text-glow">
-                Im <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 whitespace-normal sm:whitespace-nowrap animate-gradient-shift">
+            <div className="mb-3 sm:mb-4">
+              <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-bold leading-tight animate-text-glow">
+                Im <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 animate-gradient-shift">
                   Steven Jonathan Sihombing
                 </span>
               </h1>
             </div>
           
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
+            <h2 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 md:mb-6">
               a <span className="text-blue-400 animate-pulse">Website Developer</span>
             </h2>
             
-            <p className="text-gray-400 mb-6 sm:mb-8 max-w-lg text-base sm:text-lg animate-fade-in-up">
+            <p className="text-gray-400 mb-5 sm:mb-6 md:mb-8 max-w-md text-xs xs:text-sm sm:text-base md:text-lg animate-fade-in-up">
               Crafting digital experiences that blend aesthetics with functionality. 
               Specializing in intuitive interfaces and memorable user experiences.
             </p>
             
-            <div className="flex flex-wrap gap-3 sm:gap-4 animate-fade-in-up-delayed">
+            <div className="flex flex-wrap gap-2 sm:gap-3 md:gap-4 animate-fade-in-up-delayed">
               <a 
                 href="/files/cv.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-medium flex items-center space-x-2 hover:shadow-lg hover:shadow-blue-500/20 transition-all transform hover:-translate-y-1 hover:scale-105 animate-pulse-slow"
+                className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-full font-medium flex items-center space-x-1 sm:space-x-2 hover:shadow-lg hover:shadow-blue-500/20 transition-all transform hover:-translate-y-1 hover:scale-105 animate-pulse-slow"
               >
-                <span>View Resume</span>
+                <span className="text-xs sm:text-sm md:text-base">View Resume</span>
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
@@ -117,7 +119,7 @@ const LandingPageView = () => {
             </div>
             
             {/* Skills Section with staggered animation */}
-            <div className="mt-8 sm:mt-12 flex flex-wrap gap-2 sm:gap-3">
+            <div className="mt-6 sm:mt-8 md:mt-12 flex flex-wrap gap-2 sm:gap-3">
               <Skill icon={<FaLaptopCode />} text="UI Design" delay="0.1s" />
               <Skill icon={<FaPalette />} text="UX Research" delay="0.2s" />
               <Skill icon={<FaPencilRuler />} text="Prototyping" delay="0.3s" />
@@ -126,7 +128,7 @@ const LandingPageView = () => {
           </div>
           
           {/* Right Content - Profile Image and Social Media */}
-          <div className={`relative w-full md:w-2/5 flex justify-center items-center order-1 md:order-2 mb-8 md:mb-0 transition-all duration-1000 ${mounted ? 'animate-slide-in-right' : 'opacity-0 translate-x-[50px]'}`}>
+          <div className={`relative w-full md:w-2/5 flex justify-center items-center order-1 md:order-2 mb-6 sm:mb-8 md:mb-0 transition-all duration-1000 ${mounted ? 'animate-slide-in-right' : 'opacity-0 translate-x-[50px]'}`}>
             <ProfileSection />
           </div>
         </section>
@@ -262,7 +264,8 @@ const LandingPageView = () => {
           background-image: 
             linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
             linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px);
-          background-size: 50px 50px;
+          background-size: 40px 40px;
+          background-size: calc(40px + (50 - 40) * ((100vw - 320px) / (1920 - 320)));
         }
       `}</style>
     </div>
@@ -273,10 +276,10 @@ const ProfileSection = () => {
   return (
     <div className="relative animate-profile-entrance">
       {/* Background shape */}
-      <div className="absolute w-60 h-60 sm:w-72 sm:h-72 md:w-96 md:h-96 bg-gradient-to-br from-blue-900/20 to-purple-900/20 rounded-full blur-2xl animate-pulse"></div>
+      <div className="absolute w-48 h-48 xs:w-56 xs:h-56 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 bg-gradient-to-br from-blue-900/20 to-purple-900/20 rounded-full blur-2xl animate-pulse"></div>
       
       {/* Decorative circles - improved position for different screen sizes */}
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-56 h-56 sm:w-64 sm:h-64 md:w-80 md:h-80">
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-44 h-44 xs:w-48 xs:h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-80 lg:h-80">
         {/* Rotating circles - tighter position to photo */}
         <div className="absolute inset-0 border-2 border-transparent border-t-blue-500/50 border-r-purple-500/50 rounded-full animate-spin-slow"></div>
         <div className="absolute inset-0 border-2 border-transparent border-b-purple-500/50 border-l-blue-500/50 rounded-full animate-spin-slow-reverse"></div>
@@ -284,7 +287,7 @@ const ProfileSection = () => {
       
       {/* Profile Image Container - Fixed centering and improved styling */}
       <div className="relative z-10 flex justify-center items-center">
-        <div className="w-52 h-52 sm:w-60 sm:h-60 md:w-72 md:h-72 rounded-full overflow-hidden bg-gradient-to-br from-blue-500/20 to-purple-600/20 p-1 shadow-2xl shadow-blue-500/30 hover:shadow-blue-500/50 transition-all duration-500">
+        <div className="w-40 h-40 xs:w-44 xs:h-44 sm:w-52 sm:h-52 md:w-60 md:h-60 lg:w-72 lg:h-72 rounded-full overflow-hidden bg-gradient-to-br from-blue-500/20 to-purple-600/20 p-1 shadow-2xl shadow-blue-500/30 hover:shadow-blue-500/50 transition-all duration-500">
           <div className="relative w-full h-full rounded-full overflow-hidden">
             <img 
               src="/images/steven.jpg" 
@@ -335,10 +338,14 @@ const SocialMediaRing = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 640) {
-        setRadius(110); // Smaller radius for mobile
+      if (window.innerWidth < 480) {
+        setRadius(90); // Smaller radius for mobile
+      } else if (window.innerWidth < 640) {
+        setRadius(100); // Medium radius for small tablets
       } else if (window.innerWidth < 768) {
-        setRadius(130); // Medium radius for tablets
+        setRadius(110); // Medium radius for tablets
+      } else if (window.innerWidth < 1024) {
+        setRadius(130); // Medium radius for small desktops
       } else {
         setRadius(150); // Original radius for desktop
       }
@@ -387,12 +394,12 @@ const SocialButton = ({ icon, gradient, tooltip, url } : any) => {
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        className={`flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full shadow-lg hover:shadow-xl transform transition-all hover:scale-110 hover:-translate-y-1 bg-gradient-to-br ${gradient} animate-bounce-subtle`}
+        className={`flex items-center justify-center w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full shadow-lg hover:shadow-xl transform transition-all hover:scale-110 hover:-translate-y-1 bg-gradient-to-br ${gradient} animate-bounce-subtle`}
         aria-label={tooltip}
       >
         <div className="text-white transition-transform group-hover:scale-110">{icon}</div>
       </a>
-      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-10 animate-fade-in">
+      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-[10px] xs:text-xs px-2 py-1 rounded whitespace-nowrap z-10 animate-fade-in">
         {tooltip}
         <div className="absolute top-full left-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-gray-800 transform -translate-x-1/2"></div>
       </div>
@@ -403,11 +410,11 @@ const SocialButton = ({ icon, gradient, tooltip, url } : any) => {
 const Skill = ({ icon, text, delay } : any) => {
   return (
     <div 
-      className="flex items-center gap-1.5 sm:gap-2 bg-gray-800/50 backdrop-blur-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full hover:bg-gray-700/50 transition-all border border-gray-700/50 hover:border-blue-500/50 hover:shadow-lg hover:shadow-blue-500/20 transform hover:-translate-y-1 animate-fade-in-up opacity-0"
+      className="flex items-center gap-1 xs:gap-1.5 sm:gap-2 bg-gray-800/50 backdrop-blur-sm px-2 xs:px-3 sm:px-4 py-1 xs:py-1.5 sm:py-2 rounded-full hover:bg-gray-700/50 transition-all border border-gray-700/50 hover:border-blue-500/50 hover:shadow-lg hover:shadow-blue-500/20 transform hover:-translate-y-1 animate-fade-in-up opacity-0"
       style={{ animationDelay: delay, animationFillMode: 'forwards' }}
     >
       <div className="text-blue-400 transition-colors group-hover:text-blue-300">{icon}</div>
-      <span className="text-xs sm:text-sm font-medium">{text}</span>
+      <span className="text-[10px] xs:text-xs sm:text-sm font-medium">{text}</span>
       
       <style jsx>{`
         @keyframes bounce-subtle {

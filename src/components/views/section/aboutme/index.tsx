@@ -134,8 +134,6 @@ const AboutMeSection = () => {
           </div>
         </div>
 
-        {/* Projects Button */}
-
 
       </section>
 

@@ -17,7 +17,7 @@ import {
 const ProjectsExperiencesSection = () => {
   const [activeTab, setActiveTab] = useState('it-projects');
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedExperience, setSelectedExperience] = useState(null);
+  const [selectedExperience, setSelectedExperience] = useState<any>(null);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -91,7 +91,7 @@ const ProjectsExperiencesSection = () => {
     },
   ];
 
-  const openModal = (experience : any) => {
+  const openModal = (experience: any) => {
     setSelectedExperience(experience);
     setModalOpen(true);
     document.body.style.overflow = 'hidden';
@@ -103,7 +103,13 @@ const ProjectsExperiencesSection = () => {
     document.body.style.overflow = 'auto';
   };
 
-  const handleProjectLink = (link : string) => {
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      closeModal();
+    }
+  };
+
+  const handleProjectLink = (link: string) => {
     if (link === '/') {
       window.location.href = link;
     } else {
@@ -111,7 +117,7 @@ const ProjectsExperiencesSection = () => {
     }
   };
 
-  const getGridClasses = (itemCount : number) => {
+  const getGridClasses = (itemCount: number) => {
     if (itemCount === 1) {
       return 'grid grid-cols-1 justify-items-center max-w-md mx-auto';
     } else if (itemCount === 2) {
@@ -123,14 +129,12 @@ const ProjectsExperiencesSection = () => {
 
   return (
     <>
-      <div id="projects" className="min-h-screen py-20 relative z-10 px-4 bg-gray-950">
-        {/* Enhanced Background effects */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-          {/* Animated glowing orbs */}
+      <div id="projects" className="min-h-screen py-20 relative px-4 bg-gray-950">
+        {/* Background effects */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
           <div className="absolute top-1/4 left-1/3 w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 bg-purple-500 rounded-full filter blur-3xl opacity-10 animate-float"></div>
           <div className="absolute bottom-1/4 right-1/3 w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 bg-blue-500 rounded-full filter blur-3xl opacity-10 animate-float-delayed"></div>
           
-          {/* Animated particles */}
           <div className="absolute inset-0">
             {[...Array(12)].map((_, i) => (
               <div
@@ -146,12 +150,11 @@ const ProjectsExperiencesSection = () => {
             ))}
           </div>
           
-          {/* Gradient overlays */}
           <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-purple-500/10 to-transparent"></div>
           <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-blue-500/10 to-transparent"></div>
         </div>
 
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto relative z-10">
           <div className={`text-center mb-12 transition-all duration-1000 ${mounted ? 'animate-fade-in-up' : 'opacity-0 translate-y-[30px]'}`}>
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 animate-text-glow">
               My <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 animate-gradient-shift">Projects</span>
@@ -214,12 +217,96 @@ const ProjectsExperiencesSection = () => {
               ))}
             </div>
           )}
-
-          {modalOpen && selectedExperience && (
-            <SocialExperienceModal experience={selectedExperience} onClose={closeModal} />
-          )}
         </div>
       </div>
+
+      {modalOpen && selectedExperience && (
+        <div 
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-[9999]"
+          onClick={handleBackdropClick}
+        >
+          <div 
+            className="relative bg-gray-900 border border-gray-800 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto z-[10000]"
+          >
+            <button
+              onClick={closeModal}
+              aria-label="Close modal"
+              className="absolute top-4 right-4 text-gray-400 hover:text-white bg-gray-800/80 p-2 rounded-full transition-all duration-300 z-20 transform hover:scale-110 hover:bg-red-500/20"
+            >
+              <FaTimes />
+            </button>
+
+            <div className="relative h-64 z-0">
+              <img
+                src={selectedExperience.image}
+                alt={selectedExperience.title}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-90 z-10"></div>
+              <div className="absolute bottom-0 left-0 w-full p-6 z-20">
+                <div className="flex items-center mb-2">
+                  <div className="mr-4 bg-gray-800/80 backdrop-blur-sm p-3 rounded-full animate-pulse-slow">
+                    {selectedExperience.icon}
+                  </div>
+                  <div>
+                    <h2 className="text-white font-bold text-2xl md:text-3xl animate-text-glow">{selectedExperience.title}</h2>
+                    <h3 className="text-blue-400 font-medium text-lg hover:text-purple-400 transition-colors duration-300">{selectedExperience.organization}</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6">
+              <div className="flex flex-wrap items-center text-gray-400 text-sm mb-6 gap-y-2">
+                <div className="flex items-center mr-6 hover:text-gray-300 transition-colors duration-300">
+                  <FaCalendarAlt className="mr-2 text-blue-400" />
+                  <span>{selectedExperience.period}</span>
+                </div>
+                <div className="flex items-center hover:text-gray-300 transition-colors duration-300">
+                  <FaMapMarkerAlt className="mr-2 text-blue-400" />
+                  <span>{selectedExperience.location}</span>
+                </div>
+              </div>
+
+              <div className="mb-8">
+                <h4 className="text-white font-bold text-xl mb-3 animate-text-glow">Description</h4>
+                <p className="text-gray-400 hover:text-gray-300 transition-colors duration-300">{selectedExperience.description}</p>
+              </div>
+
+              {selectedExperience.achievements && selectedExperience.achievements.length > 0 && (
+                <div className="mb-8">
+                  <h4 className="text-white font-bold text-xl mb-3 animate-text-glow">Key Achievements</h4>
+                  <ul className="space-y-2">
+                    {selectedExperience.achievements.map((achievement: string, index: number) => (
+                      <li key={index} className="flex items-start hover:text-gray-300 transition-colors duration-300">
+                        <span className="text-blue-400 mr-2 animate-pulse-slow">•</span>
+                        <span className="text-gray-400">{achievement}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {selectedExperience.gallery && selectedExperience.gallery.length > 0 && (
+                <div className="mb-6">
+                  <h4 className="text-white font-bold text-xl mb-4 animate-text-glow">Gallery</h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    {selectedExperience.gallery.map((image: string, index: number) => (
+                      <div key={index} className="rounded-lg overflow-hidden border border-gray-800 aspect-video hover:border-blue-500/50 transition-all duration-300 transform hover:scale-105">
+                        <img
+                          src={image}
+                          alt={`Gallery image ${index + 1}`}
+                          className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* CSS Animations */}
       <style jsx>{`
@@ -266,16 +353,6 @@ const ProjectsExperiencesSection = () => {
           50% { transform: scale(1.02); }
         }
         
-        @keyframes scale-in {
-          from { opacity: 0; transform: scale(0.9) translateY(20px); }
-          to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        
-        @keyframes card-hover {
-          from { transform: translateY(0) scale(1); }
-          to { transform: translateY(-8px) scale(1.02); }
-        }
-        
         .animate-float {
           animation: float 6s ease-in-out infinite;
         }
@@ -308,53 +385,36 @@ const ProjectsExperiencesSection = () => {
         .animate-pulse-slow {
           animation: pulse-slow 3s ease-in-out infinite;
         }
-        
-        .animate-scale-in {
-          animation: scale-in 0.8s ease-out forwards;
-        }
-        
-        .animate-card-hover:hover {
-          animation: card-hover 0.3s ease-out forwards;
-        }
-        
-        .group:hover .animate-image-scale {
-          transform: scale(1.1);
-        }
-        
-        .animate-image-scale {
-          transition: transform 0.5s ease-out;
-        }
       `}</style>
     </>
   );
 };
 
-const ProjectCard = ({ project, onLinkClick, index, mounted } : any) => {
-  const getProjectIcon = (title : string) => {
+const ProjectCard = ({ project, onLinkClick, index, mounted }: any) => {
+  const getProjectIcon = (title: string) => {
     if (title.includes('Portfolio')) return <FaGlobe className="text-blue-400" />;
     if (title.includes('Mindora AI')) return <FaBrain className="text-green-400" />;
     if (title.includes('Pemilos')) return <FaVoteYea className="text-purple-400" />;
     return <FaCode className="text-blue-400" />;
   };
 
-  const animationDelay = `${0.5 + index * 0.2}s`;
-
   return (
     <div 
-      className={`bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl overflow-hidden group hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-500 transform hover:-translate-y-2 hover:scale-105 hover:border-blue-500/30 w-full max-w-sm mx-auto animate-card-hover ${mounted ? 'animate-slide-in-up' : 'opacity-0'}`}
+      className="relative bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl overflow-hidden group hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-500 transform hover:-translate-y-2 hover:scale-105 hover:border-blue-500/30 w-full max-w-sm mx-auto"
       style={{ 
-        animationDelay: animationDelay,
-        animationFillMode: 'forwards'
+        zIndex: 10,
+        animation: mounted ? `slide-in-up 0.8s ease-out ${0.5 + index * 0.2}s forwards` : 'none',
+        opacity: mounted ? 1 : 0
       }}
     >
-      <div className="relative overflow-hidden h-48">
+      <div className="relative overflow-hidden h-48 z-0">
         <img
           src={project.image}
           alt={project.title}
-          className="w-full h-full object-cover animate-image-scale"
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-80 group-hover:opacity-70 transition-opacity duration-300"></div>
-        <div className="absolute bottom-0 left-0 w-full p-4 flex items-center">
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-80 group-hover:opacity-70 transition-opacity duration-300 z-10"></div>
+        <div className="absolute bottom-0 left-0 w-full p-4 flex items-center z-20">
           <div className="mr-3 bg-gray-800/80 backdrop-blur-sm p-2 rounded-full group-hover:bg-blue-500/20 transition-all duration-300 transform group-hover:scale-110 animate-pulse-slow">
             {getProjectIcon(project.title)}
           </div>
@@ -389,26 +449,25 @@ const ProjectCard = ({ project, onLinkClick, index, mounted } : any) => {
   );
 };
 
-const SocialExperienceCard = ({ experience, onClick, index, mounted } : any) => {
-  const animationDelay = `${0.5 + index * 0.2}s`;
-
+const SocialExperienceCard = ({ experience, onClick, index, mounted }: any) => {
   return (
     <div
-      className={`bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl overflow-hidden group hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-500 transform hover:-translate-y-2 hover:scale-105 hover:border-blue-500/30 cursor-pointer w-full max-w-sm mx-auto animate-card-hover ${mounted ? 'animate-slide-in-up' : 'opacity-0'}`}
-      onClick={onClick}
+      className="relative bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl overflow-hidden group hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-500 transform hover:-translate-y-2 hover:scale-105 hover:border-blue-500/30 cursor-pointer w-full max-w-sm mx-auto"
       style={{ 
-        animationDelay: animationDelay,
-        animationFillMode: 'forwards'
+        zIndex: 10,
+        animation: mounted ? `slide-in-up 0.8s ease-out ${0.5 + index * 0.2}s forwards` : 'none',
+        opacity: mounted ? 1 : 0
       }}
+      onClick={onClick}
     >
-      <div className="relative overflow-hidden h-48">
+      <div className="relative overflow-hidden h-48 z-0">
         <img
           src={experience.image}
           alt={experience.title}
-          className="w-full h-full object-cover animate-image-scale"
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-80 group-hover:opacity-70 transition-opacity duration-300"></div>
-        <div className="absolute bottom-0 left-0 w-full p-4 flex items-center">
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-80 group-hover:opacity-70 transition-opacity duration-300 z-10"></div>
+        <div className="absolute bottom-0 left-0 w-full p-4 flex items-center z-20">
           <div className="mr-3 bg-gray-800/80 backdrop-blur-sm p-2 rounded-full group-hover:bg-blue-500/20 transition-all duration-300 transform group-hover:scale-110 animate-pulse-slow">
             {experience.icon}
           </div>
@@ -437,112 +496,6 @@ const SocialExperienceCard = ({ experience, onClick, index, mounted } : any) => 
         <div className="inline-flex items-center text-sm text-blue-400 hover:text-blue-300 font-medium transition-all duration-300 transform hover:translate-x-1 group/button">
           View Details 
           <FaChevronRight className="ml-1 text-xs transition-transform duration-300 group-hover/button:translate-x-1" />
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const SocialExperienceModal = ({ experience, onClose }: any) => {
-  const handleBackdropClick = (e: any) => {
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
-  };
-
-  return (
-    <div
-      className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in-up"
-      style={{
-        zIndex: 999999,
-        isolation: 'isolate',
-      }}
-      onClick={handleBackdropClick}
-    >
-      <div
-        className="relative bg-gray-900 border border-gray-800 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto animate-scale-in"
-        style={{
-          zIndex: 1000000,
-        }}
-      >
-        <button
-          onClick={onClose}
-          aria-label="Close modal"
-          className="absolute top-4 right-4 text-gray-400 hover:text-white bg-gray-800/80 p-2 rounded-full transition-all duration-300 z-20 transform hover:scale-110 hover:bg-red-500/20"
-          style={{
-            zIndex: 1000001
-          }}
-        >
-          <FaTimes />
-        </button>
-
-        <div className="relative h-64">
-          <img
-            src={experience.image}
-            alt={experience.title}
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-90"></div>
-          <div className="absolute bottom-0 left-0 w-full p-6">
-            <div className="flex items-center mb-2">
-              <div className="mr-4 bg-gray-800/80 backdrop-blur-sm p-3 rounded-full animate-pulse-slow">
-                {experience.icon}
-              </div>
-              <div>
-                <h2 className="text-white font-bold text-2xl md:text-3xl animate-text-glow">{experience.title}</h2>
-                <h3 className="text-blue-400 font-medium text-lg hover:text-purple-400 transition-colors duration-300">{experience.organization}</h3>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="p-6">
-          <div className="flex flex-wrap items-center text-gray-400 text-sm mb-6 gap-y-2">
-            <div className="flex items-center mr-6 hover:text-gray-300 transition-colors duration-300">
-              <FaCalendarAlt className="mr-2 text-blue-400" />
-              <span>{experience.period}</span>
-            </div>
-            <div className="flex items-center hover:text-gray-300 transition-colors duration-300">
-              <FaMapMarkerAlt className="mr-2 text-blue-400" />
-              <span>{experience.location}</span>
-            </div>
-          </div>
-
-          <div className="mb-8">
-            <h4 className="text-white font-bold text-xl mb-3 animate-text-glow">Description</h4>
-            <p className="text-gray-400 hover:text-gray-300 transition-colors duration-300">{experience.description}</p>
-          </div>
-
-          {experience.achievements && experience.achievements.length > 0 && (
-            <div className="mb-8">
-              <h4 className="text-white font-bold text-xl mb-3 animate-text-glow">Key Achievements</h4>
-              <ul className="space-y-2">
-                {experience.achievements.map((achievement: string, index: number) => (
-                  <li key={index} className="flex items-start hover:text-gray-300 transition-colors duration-300">
-                    <span className="text-blue-400 mr-2 animate-pulse-slow">•</span>
-                    <span className="text-gray-400">{achievement}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {experience.gallery && experience.gallery.length > 0 && (
-            <div className="mb-6">
-              <h4 className="text-white font-bold text-xl mb-4 animate-text-glow">Gallery</h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {experience.gallery.map((image: string, index: number) => (
-                  <div key={index} className="rounded-lg overflow-hidden border border-gray-800 aspect-video hover:border-blue-500/50 transition-all duration-300 transform hover:scale-105">
-                    <img
-                      src={image}
-                      alt={`Gallery image ${index + 1}`}
-                      className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </div>
