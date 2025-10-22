@@ -29,6 +29,13 @@ const ExperienceSection = () => {
       company: "Himpunan Mahasiswa Informatika 2024",
       period: "January 2024 - January 2025",
       description: "Collaborated with the team to identify and implement social initiatives, contributed to the success of division programs, and led one of the flagship events to ensure smooth execution."
+    }, 
+    {
+      id : 4, 
+      title : "Digital Content & Journalism Intern – Telkom Regional 4, Semarang" ,
+      company : "Telkom Regional 4, Semarang",
+      period : "June 2025 - August 2025",
+      description : "Participated in the development and production of news content, including writing, editing, and proofreading, and assisted in the creation of social media content."
     }
   ];
 

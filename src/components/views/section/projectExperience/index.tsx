@@ -52,7 +52,17 @@ const ProjectsExperiencesSection = () => {
       tags: ['React', 'Next.js', 'Tailwind CSS', 'Supabase'],
       link: 'https://dcfundip2025.my.id',
     },
+    {
+      id: 4,
+      title: 'CBT Airlangga Convention 2025',
+      image: '/images/convention.png',
+      description:
+        'This website was developed as a platform for conducting the quiz competition as part of the Airlangga Convention, an academic event organized by BEM Universitas Airlangga. The system provides an online CBT (Computer-Based Test) experience designed to facilitate smooth and fair competition management, ensuring accessibility and efficiency for all participants.',
+      tags: ['CSS', 'Moodle', 'Custom CBT System'],
+      link: 'https://cbt-airlangga-convention.my.id/',
+    },
   ];
+
 
   const nonItProjects = [
     {
@@ -88,7 +98,26 @@ const ProjectsExperiencesSection = () => {
       ],
       gallery: ['/images/ICARE-1.JPG', '/images/ICARE-2.JPG', '/images/ICARE-3.JPG'],
       icon: <FaGraduationCap className="text-blue-400" />,
-    },
+    }, 
+    {
+      id: 3,
+      title: 'Digital Content & Journalism Intern – Telkom Regional 4, Semarang',
+      organization: 'Telkom Indonesia',
+      image: '/images/telkom1.jpeg',
+      period: 'July 2025 - August 2025',
+      location: 'Semarang, Indonesia',
+      description:
+        'During my internship at Telkom Regional 4 Semarang, I was responsible for creating and managing digital journalism content to support the company’s internal and external communication. I collaborated with various divisions to produce accurate, engaging, and well-structured news materials while strengthening my skills in information management, teamwork, and digital communication within a corporate environment.',
+      achievements: [
+        'Covered and documented various corporate activities and events within Telkom Regional 4 Semarang.',
+        'Wrote and edited news articles for Telkom’s internal and external communication channels.',
+        'Collaborated with multiple divisions to ensure accuracy and clarity of published information.',
+        'Utilized digital tools to manage, organize, and publish news content efficiently.',
+        'Enhanced skills in information management, teamwork, and digital communication — valuable assets for my Informatics background.'
+      ],
+      gallery: ['/images/telkom1.jpeg', '/images/telkom2.jpeg'],
+      icon: <FaGraduationCap className="text-blue-400" />
+    }
   ];
 
   const openModal = (experience: any) => {
