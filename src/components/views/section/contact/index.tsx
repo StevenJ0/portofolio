@@ -147,7 +147,7 @@ const ContactSection = () => {
                       <div className='min-w-0 flex-1'>
                         <h4 className="text-sm sm:text-base font-semibold text-white">WhatsApp</h4>
                         <a href="https://wa.me/6282162585692" className="text-xs sm:text-sm text-gray-400 hover:text-blue-400 transition-colors inline-block mt-1 break-all">
-                          +62 821-6258-5692
+                          +62 857-5506-9891
                         </a>
                       </div>
                     </div>
