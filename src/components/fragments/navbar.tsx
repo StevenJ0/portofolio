@@ -118,8 +118,12 @@ const NavItem: React.FC<{ icon: React.ReactNode; label: string; isActive: boolea
 );
 
 /* ─── Sidebar ───────────────────────────────────────────────── */
-const Sidebar: React.FC = () => {
-  const [activeItem, setActiveItem] = useState(0);
+interface SidebarProps {
+  activeSection: string;
+  onSectionChange: (id: string) => void;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ activeSection, onSectionChange }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { t } = useLocale();
 
@@ -135,23 +139,10 @@ const Sidebar: React.FC = () => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  /* Active section tracking */
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY + 120;
-      for (let i = menuItems.length - 1; i >= 0; i--) {
-        const el = document.getElementById(menuItems[i].id);
-        if (el && scrollY >= el.offsetTop) { setActiveItem(i); break; }
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [menuItems]);
-
-  const handleItemClick = (index: number) => {
-    setActiveItem(index);
+  const handleItemClick = (id: string) => {
+    onSectionChange(id);
     setMobileMenuOpen(false);
-    scrollToSection(menuItems[index].id);
+    scrollToSection(id);
   };
 
   /* Close mobile menu on outside click / scroll */
@@ -189,11 +180,11 @@ const Sidebar: React.FC = () => {
           <button
             key={index}
             className={`flex items-center gap-4 text-xl px-8 py-3 rounded-xl min-w-[200px] transition-all duration-200 ${
-              activeItem === index
+              activeSection === item.id
                 ? 'text-gold bg-gold/10 ring-1 ring-gold/20'
                 : 'text-[#aaa] hover:text-white hover:bg-white/5'
             }`}
-            onClick={() => handleItemClick(index)}
+            onClick={() => handleItemClick(item.id)}
           >
             {item.icon}
             <span className="font-medium">{t.nav[item.labelKey]}</span>
@@ -219,8 +210,8 @@ const Sidebar: React.FC = () => {
               key={index}
               icon={item.icon}
               label={t.nav[item.labelKey]}
-              isActive={activeItem === index}
-              onClick={() => handleItemClick(index)}
+              isActive={activeSection === item.id}
+              onClick={() => handleItemClick(item.id)}
             />
           ))}
         </div>
@@ -236,9 +227,9 @@ const Sidebar: React.FC = () => {
             <button
               key={index}
               className={`flex flex-col items-center gap-1 min-w-[44px] min-h-[44px] p-2 rounded-lg transition-colors ${
-                activeItem === index ? 'text-gold' : 'text-[#555] hover:text-white'
+                activeSection === item.id ? 'text-gold' : 'text-[#555] hover:text-white'
               }`}
-              onClick={() => handleItemClick(index)}
+              onClick={() => handleItemClick(item.id)}
             >
               {item.icon}
               <span className="text-[9px] font-medium">{t.nav[item.labelKey]}</span>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { motion, type Variants } from 'framer-motion';
 import { FaGithub, FaInstagram, FaLinkedin, FaChevronDown } from 'react-icons/fa';
 
@@ -9,6 +9,9 @@ import ExperienceSection from '../section/experience';
 import ContactSection from '../section/contact';
 import MultiLanguageGreeting from '@/components/animation/multiLanguage';
 import { useLocale } from '@/context/LocaleContext';
+import { useActiveSection } from '@/hooks/useActiveSection';
+
+const SECTION_IDS = ['home', 'about', 'projects', 'experience', 'contact'];
 
 const socialLinks = [
   { icon: <FaGithub />, href: 'https://github.com/StevenJ0', label: 'GitHub' },
@@ -19,6 +22,7 @@ const socialLinks = [
 const LandingPageView = () => {
   const [scrolled, setScrolled] = useState(false);
   const { t } = useLocale();
+  const { activeSection, setActiveSection } = useActiveSection(SECTION_IDS, 'home');
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 80);
@@ -48,7 +52,7 @@ const LandingPageView = () => {
 
   return (
     <div className="min-h-screen bg-[#121212] overflow-x-hidden">
-      <Sidebar />
+      <Sidebar activeSection={activeSection} onSectionChange={setActiveSection} />
 
       {/* Scroll indicator */}
       <motion.div
