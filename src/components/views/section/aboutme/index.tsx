@@ -1,259 +1,228 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { useLocale } from '@/context/LocaleContext';
+
+/* ─── Technology skills with inline SVG icons ──────────────── */
+const skills = [
+  {
+    name: 'React',
+    icon: (
+      <svg viewBox="0 0 128 128" className="w-8 h-8">
+        <g fill="#61DAFB">
+          <circle cx="64" cy="64" r="11.4"/>
+          <path d="M107.3 45.2c-2.2-.8-4.5-1.6-6.9-2.3.6-2.4 1.1-4.8 1.4-7.2 2.1-13.3-1-24-6.7-27.3-5.3-3.1-12.4-.5-19.7
+            6.4-1.9 1.7-3.7 3.6-5.5 5.6-1.6-1.9-3.3-3.7-5.1-5.4-7.5-7.1-14.7-9.9-20.1-6.7C38 11.9 35 22.3 37.2
+            35.9c.3 2.2.8 4.5 1.4 7-2.5.7-4.9 1.5-7.2 2.4C21.2 49.3 14 55.6 14 64c0 8.7 7.5 15.1 18.2 18.8
+            1.7.6 3.6 1.1 5.5 1.6-.6 2.5-1 5-1.3 7.5-1.9 13.2 1.1 23.5 6.9 26.7 6 3.5 13.8.3 21.3-6.8
+            1.7-1.5 3.4-3.3 5.1-5.2 1.8 1.9 3.6 3.8 5.5 5.4 7.4 6.8 14.5 9.3 20 6.1 5.9-3.4 9-13.7 7.1-26.8-.3-2.3-.7-4.8-1.4-7.3
+            1.6-.4 3.2-.9 4.8-1.4 12.1-4 19.4-10.3 19.4-18.8 0-8.1-6.8-14.3-18.7-18.8zm-15.1-4.5c-.3 1.4-.7 2.9-1.2 4.4
+            -1.3-.3-2.7-.6-4.1-.9-1.4-.3-2.8-.5-4.2-.7-1-1.9-2.1-3.8-3.2-5.6-.6-1-1.2-1.9-1.8-2.9 2.3 1.7 4.5 3.7 6.7 6
+            1.1 1.1 2.2 2.3 3.3 3.5zm-14.4-3.7c1.5 2.4 2.9 4.9 4.3 7.5-2.8-.3-5.6-.4-8.4-.4-2.9 0-5.7.1-8.4.4
+            1.4-2.6 2.9-5.1 4.4-7.5 1.3-2 2.6-3.9 3.9-5.6 1.4 1.8 2.7 3.7 4.2 5.6zm-18.3 15.3c-.7 1.5-1.4 3-2.1 4.5
+            -.2-.4-.4-.8-.5-1.2-1.5-3.4-2.9-6.9-4.1-10.4 3.9-.7 7.9-1.1 11.9-1.1 4.1 0 8 .4 11.9 1.1-1.2 3.5-2.5 7-4.1 10.4
+            -.1.4-.3.8-.5 1.2-.6-1.5-1.3-3-1.9-4.5h-10.6zm-3.7 14.6c-.3-.7-.6-1.4-.9-2.1-.4-1-.8-2-1.2-3
+            1.3.1 2.6.2 3.9.2 4.2 0 8.2-.5 12-1.3-.4 1-.8 2-1.2 3-.3.7-.6 1.4-.9 2.1-1.3 3.1-2.7 6-4.2 8.7
+            -1.5-2.8-2.9-5.7-4.2-8.7h-3.3zm6.9 14.8c-.3.5-.7 1-1 1.5-1.3-2.6-2.6-5.4-3.8-8.3 1.2.2 2.5.3 3.8.3
+            1.3 0 2.6-.1 3.8-.3-1.2 2.9-2.5 5.7-3.8 8.3zm-6.5 17.9c-5.4-6.5-9.7-13.4-12.9-20.3 3.7-1 7.7-1.7 12-2l.1-.1
+            1.1.1c4.2.3 8.2 1 11.8 2-3.1 6.9-7.4 13.8-12.1 20.3zm1.1 6.9c-1.4-1.4-2.8-2.9-4.1-4.5 1.4.4 2.8.6 4.2.6
+            1.4 0 2.8-.2 4.2-.6-1.4 1.6-2.8 3.2-4.3 4.5zm10.8-13c-2.2-2.3-4.3-4.8-6.3-7.5h12.6c-2 2.7-4.1 5.2-6.3 7.5zm1.4-26.7c-3-.1-6.1.1-9.3.5.7-2.2 1.6-4.4 2.5-6.4.9 2 1.8 4.2 2.5 6.4.7-2.2 1.4-4.4 2.1-6.5.8 2.2 1.6 4.4 2.2 6.5zm-4.5-16.1c-.9-2-1.9-3.9-2.9-5.8h5.9c-1 1.9-2 3.8-3 5.8z"/>
+        </g>
+      </svg>
+    ),
+  },
+  {
+    name: 'Next.js',
+    icon: (
+      <svg viewBox="0 0 128 128" className="w-8 h-8">
+        <path d="M64 0C28.7 0 0 28.7 0 64s28.7 64 64 64c11.2 0 21.7-2.9 30.8-7.9L48.4 55.3v36.6H36V36h13.8l50.5 75.2C116.5 100.7 128 83.8 128 64c0-35.3-28.7-64-64-64z" fill="white"/>
+      </svg>
+    ),
+  },
+  {
+    name: 'TypeScript',
+    icon: (
+      <svg viewBox="0 0 128 128" className="w-8 h-8">
+        <path fill="#3178c6" d="M2 63.91v62.5h125v-125H2zm100.73-5a15.56 15.56 0 017.82 4.5 20.58 20.58 0 013 4c0 .16-5.4 3.81-8.69 5.85-.12.08-.6-.44-1.13-1.23a7.09 7.09 0 00-5.87-3.53c-3.79-.26-6.23 1.73-6.21 5a4.58 4.58 0 00.54 2.34c.83 1.73 2.38 2.76 7.24 4.86 8.95 3.85 12.78 6.39 15.16 10 2.66 4 3.25 10.46 1.45 15.24-2 5.2-6.9 8.73-13.83 9.9a38.32 38.32 0 01-9.52-.1 23 23 0 01-12.72-6.63c-1.15-1.27-3.39-4.58-3.25-4.82a9.34 9.34 0 011.15-.73l4.6-2.64 3.59-2.08.75 1.11a16.78 16.78 0 004.74 4.54c4 2.1 9.46 1.81 12.16-.62a5.43 5.43 0 00.69-6.92c-1-1.39-3-2.56-8.59-5-6.45-2.78-9.23-4.5-11.77-7.24a16.48 16.48 0 01-3.43-6.25 25 25 0 01-.22-8c1.33-6.23 6-10.58 12.82-11.87a31.66 31.66 0 019.49.26zm-29.34 5.24v5.12H57.16v46.23H45.65V69.26H29.38v-5a49.19 49.19 0 01.14-5.16c.06-.08 10-.12 22-.1h21.89z"/>
+      </svg>
+    ),
+  },
+  {
+    name: 'Tailwind CSS',
+    icon: (
+      <svg viewBox="0 0 128 128" className="w-8 h-8">
+        <path d="M64.004 25.602c-17.067 0-27.73 8.53-32 25.597 6.398-8.531 13.867-11.73 22.398-9.597 4.871 1.214 8.352 4.746 12.207 8.66C72.883 56.629 80.145 64 96.004 64c17.066 0 27.73-8.531 32-25.602-6.399 8.536-13.867 11.735-22.399 9.602-4.87-1.215-8.347-4.746-12.207-8.661-6.27-6.367-13.53-13.737-29.394-13.737zM32.004 64c-17.066 0-27.73 8.531-32 25.602C6.402 81.066 13.87 77.867 22.402 80c4.871 1.215 8.352 4.746 12.207 8.66 6.274 6.367 13.536 13.738 29.395 13.738 17.066 0 27.73-8.531 32-25.602-6.399 8.536-13.867 11.735-22.399 9.602-4.87-1.215-8.347-4.746-12.207-8.661C55.128 71.371 47.868 64 32.004 64z" fill="#38BDF8"/>
+      </svg>
+    ),
+  },
+  {
+    name: 'Node.js',
+    icon: (
+      <svg viewBox="0 0 128 128" className="w-8 h-8">
+        <path fill="#83CD29" d="M112.678 30.334L68.535 4.729c-2.781-1.584-6.424-1.584-9.227 0L14.82 30.334C12.03 31.925 10 35.088 10 38.277v51.201c0 3.178 2.013 6.358 4.82 7.94l11.227 6.443c5.452 2.708 7.817 2.708 10.478 2.708 8.563 0 13.478-5.187 13.478-14.ületüzeti.168v-50.5c0-.981-.853-1.765-1.821-1.765h-4.786c-1.006 0-1.785.784-1.785 1.765v50.5c0 4.563-4.741 9.087-12.384 5.231L17.5 90.814V38.277L64 12.659l46.837 26.77v51.209l-11.145 6.37c-6.291 3.406-10.341-.197-12.04-1.774V63.998c0-9.063-6.105-14.059-16.79-14.059-11.376 0-18.163 4.744-18.163 14.059v3.234c0 .981.784 1.766 1.785 1.766h4.786c.981 0 1.821-.785 1.821-1.766v-3.234c0-4.422 1.813-6.308 10.015-6.308 7.585 0 9.222 2.08 9.222 6.308v3.359l-12.264 1.21C57.044 70.02 44 74.617 44 88.127c0 13.706 10.678 18.046 21.313 18.046 10.479 0 16.17-2.571 20.603-7.127 1.891 4.828 6.396 6.361 10.736 6.361 3.01 0 7.339-.765 11.311-2.854v.012l.06-.033c.013-.008.027-.017.04-.022l.064-.038v-.016c2.747-1.582 4.678-4.73 4.678-7.858V38.277c-.001-3.19-2.031-6.353-4.127-7.943zM80.907 82.971c0 7.63-5.448 10.748-12.832 10.748-7.713 0-12.554-3.262-12.554-9.45 0-7.034 5.079-9.133 13.847-10.033l11.539-1.145V82.971z"/>
+      </svg>
+    ),
+  },
+  {
+    name: 'PostgreSQL',
+    icon: (
+      <svg viewBox="0 0 128 128" className="w-8 h-8">
+        <path fill="#336791" d="M93.809 92.112c.785-6.533.55-7.492 5.416-6.433l1.235.108c3.742.16 8.637-.6 11.513-1.938 6.191-2.873 9.861-7.668 3.758-6.409-13.924 2.873-14.881-1.842-14.881-1.842 14.703-21.815 20.849-49.508 15.543-56.287-14.47-18.489-39.517-9.746-39.936-9.52l-.134.025c-2.751-.571-5.83-.912-9.289-.968-6.292-.104-11.066 1.652-14.702 4.402 0 0-44.683-18.409-42.604 23.151.442 8.841 12.672 66.898 27.26 49.362 5.332-6.412 10.484-11.834 10.484-11.834 2.558 1.699 5.622 2.567 8.834 2.255l.249-.212c-.078.796-.044 1.575.099 2.497-3.757 4.199-2.653 4.936-10.166 6.482-7.602 1.566-3.136 4.355-.22 5.084 3.535.884 11.712 2.136 17.238-5.598l-.22.882c1.474 1.18 1.375 8.477 1.583 13.69.209 5.214.558 10.079 1.621 12.948 1.063 2.868 2.317 10.256 12.191 8.14 8.252-1.764 14.561-4.309 15.136-27.931"/>
+        <path fill="#fff" d="M75.957 122.307c-8.232 0-10.281-6.443-11.365-9.663l-.032-.124c-1.014-2.774-1.37-7.703-1.577-12.664-.057-1.334-.117-2.706-.191-3.96-2.9 2.282-6.598 3.291-11.882 2.843-3.199-.278-6.34-1.29-8.851-2.864-1.676 1.8-4.851 5.29-8.434 9.644-2.666 3.203-5.519 4.535-8.718 4.069-5.312-.771-7.875-4.826-9.015-7.81C9.29 87.083 3.229 52.107 2.764 42.762 2.406 35.498 4.001 29.6 7.506 25.289c5.807-7.122 15.819-9.286 26.499-10.084 3.499-.255 7.184-.398 10.857-.441 6.601-.108 12.158 1.004 16.9 3.317.88-.292 1.815-.559 2.806-.77 4.31-.94 15.899-2.71 26.752 4.268 4.327 2.76 8.11 7.072 10.974 12.476 3.713 6.995 6.011 16.071 6.574 26.161 1.31 23.342-4.706 39.96-15.076 48.256l-.013.01c1.7 1.97 3.13 5.025 5.484 12.753 1.218 3.957 1.032 7.025.437 9.398-.557 2.237-1.59 3.995-2.88 5.226-1.574 1.5-3.486 2.382-5.534 2.825-1.759.378-3.625.502-5.512.502z"/>
+      </svg>
+    ),
+  },
+  {
+    name: 'Figma',
+    icon: (
+      <svg viewBox="0 0 128 128" className="w-8 h-8">
+        <path d="M45.5 129c12.98 0 23.5-10.52 23.5-23.5V82H45.5C32.52 82 22 92.52 22 105.5S32.52 129 45.5 129z" fill="#0ACF83"/>
+        <path d="M22 64c0-12.98 10.52-23.5 23.5-23.5H69v47H45.5C32.52 87.5 22 76.98 22 64z" fill="#A259FF"/>
+        <path d="M22 22.5C22 9.52 32.52-1 45.5-1H69v47H45.5C32.52 46 22 35.48 22 22.5z" fill="#F24E1E"/>
+        <path d="M69-1h23.5C105.48-1 116 9.52 116 22.5S105.48 46 92.5 46H69V-1z" fill="#FF7262"/>
+        <path d="M116 64c0 12.98-10.52 23.5-23.5 23.5S69 76.98 69 64s10.52-23.5 23.5-23.5S116 51.02 116 64z" fill="#1ABCFE"/>
+      </svg>
+    ),
+  },
+  {
+    name: 'Git',
+    icon: (
+      <svg viewBox="0 0 128 128" className="w-8 h-8">
+        <path fill="#F34F29" d="M124.742 58.378L69.625 3.264c-3.172-3.174-8.32-3.174-11.497 0L46.685 14.71l14.518 14.518c3.375-1.139 7.243-.375 9.932 2.314 2.703 2.706 3.461 6.607 2.294 9.993l13.992 13.993c3.385-1.167 7.292-.413 9.994 2.295 3.78 3.777 3.78 9.9 0 13.679a9.664 9.664 0 01-13.683 0 9.665 9.665 0 01-2.105-10.521L68.574 47.933l-.002 34.341a9.708 9.708 0 012.559 1.828c3.778 3.777 3.778 9.898 0 13.683-3.779 3.777-9.904 3.777-13.679 0-3.778-3.784-3.778-9.905 0-13.683a9.65 9.65 0 013.167-2.11V47.333a9.581 9.581 0 01-3.167-2.11c-2.862-2.861-3.551-7.06-2.083-10.576L41.056 20.333 3.264 58.123a8.133 8.133 0 000 11.5l55.117 55.114c3.174 3.174 8.32 3.174 11.499 0l54.858-54.858a8.135 8.135 0 00.004-11.501z"/>
+      </svg>
+    ),
+  },
+  {
+    name: 'Docker',
+    icon: (
+      <svg viewBox="0 0 128 128" className="w-8 h-8">
+        <path fill="#2396ED" d="M124.8 52.1c-4.3-2.5-10-2.8-14.8-1.4-.6-5.2-4-9.7-8.3-12.4l-1.7-1-1.1 1.6c-2.2 3.3-2.8 8.9-1.5 13.1-2.2-1.2-5-1.7-7.9-1.4-1.1.1-2.1.3-3 .5H11.9C9.2 56.8 9 66.1 13 73.4c3.5 6.3 10 9.5 18.7 9.5 17.5 0 30.5-8 38.8-23.8 4.5.1 9.2-.9 12.1-5h.1l1.9-3.2-3-1.8z"/>
+        <path fill="#2396ED" d="M10.3 52.9H22v11H17v.1c-2-.1-6.7 0-6.7-5.5V52.9z"/>
+        <path fill="#2396ED" d="M24.3 52.9h11.4v10.3H24.3V52.9z"/>
+        <path fill="#2396ED" d="M37.4 52.9h11.4v10.3H37.4V52.9z"/>
+        <path fill="#2396ED" d="M50.5 52.9h11.4v10.3H50.5V52.9z"/>
+        <path fill="#2396ED" d="M37.4 41.4h11.4v10.3H37.4V41.4z"/>
+        <path fill="#2396ED" d="M50.5 41.4h11.4v10.3H50.5V41.4z"/>
+        <path fill="#2396ED" d="M63.6 41.4H75v10.3H63.6V41.4z"/>
+      </svg>
+    ),
+  },
+];
+
+const containerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.07 } },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
+};
+
+const SkillCard = ({ skill }: { skill: typeof skills[0] }) => (
+  <motion.div
+    variants={cardVariants}
+    whileHover={{ rotateX: 6, rotateY: 6, scale: 1.06, boxShadow: '0 16px 40px rgba(232,160,32,0.15)' }}
+    className="flex flex-col items-center justify-center gap-3 bg-[#1c1c1c] border border-[#2a2a2a] rounded-xl p-5 cursor-default"
+    style={{ transformStyle: 'preserve-3d' }}
+  >
+    <div className="w-10 h-10 flex items-center justify-center">
+      {skill.icon}
+    </div>
+    <span className="text-sm text-[#aaa] font-medium text-center leading-tight">{skill.name}</span>
+  </motion.div>
+);
 
 const AboutMeSection = () => {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const particleStyles = useMemo(() => {
-    return [...Array(15)].map(() => ({
-      left: `${Math.random() * 100}%`,
-      top: `${Math.random() * 100}%`,
-      animationDelay: `${Math.random() * 3}s`,
-      animationDuration: `${2 + Math.random() * 2}s`,
-    }));
-  }, []);
+  const { t } = useLocale();
 
   return (
-    <>
-      <section id="about" className="py-20 min-h-screen flex flex-col justify-center relative z-10">
-        {/* Enhanced Background effects */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-          {/* Animated glowing orbs */}
-          <div className="absolute top-1/3 right-1/4 w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 bg-blue-500 rounded-full filter blur-3xl opacity-10 animate-float"></div>
-          <div className="absolute bottom-1/3 left-1/4 w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 bg-purple-500 rounded-full filter blur-3xl opacity-10 animate-float-delayed"></div>
-          
-          {/* Animated particles */}
-          <div className="absolute inset-0">
-            {particleStyles.map((style, i) => (
-              <div
-                key={i} // Add unique key prop
-                className="absolute w-1 h-1 bg-purple-400 rounded-full animate-twinkle"
-                style={style} // Use precomputed styles
-              ></div>
-            ))}
-          </div>
-        </div>
-        
-        {/* Section Title */}
-        <div className={`mb-12 text-center transition-all duration-1000 ${mounted ? 'animate-fade-in-up' : 'opacity-0 translate-y-[30px]'}`}>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 animate-text-glow">
-            About <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 animate-gradient-shift">Me</span>
+    <section id="about" className="py-24 px-6 sm:px-10 lg:px-20 xl:px-32 bg-[#121212]">
+      <div className="max-w-6xl mx-auto">
+        {/* Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mb-16"
+        >
+          <div className="section-divider" />
+          <h2 className="text-4xl sm:text-5xl font-extrabold text-white">
+            {t.about.title}{' '}
+            <span className="text-gold">{t.about.titleHighlight}</span>
           </h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto animate-pulse-slow"></div>
-        </div>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-          {/* Left Column - Bio */}
-          <div className={`bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-blue-500/10 transition-all duration-1000 transform hover:-translate-y-2 hover:scale-105 ${mounted ? 'animate-slide-in-left' : 'opacity-0 translate-x-[-50px]'}`}>
-            <h3 className="text-3xl font-bold text-white mb-6 animate-text-glow">
-              Who Am I?
-            </h3>
-            
-            <div className="space-y-6">
-              <p className="text-gray-300 leading-relaxed animate-fade-in-up opacity-0" style={{ animationDelay: '0.3s', animationFillMode: 'forwards' }}>
-                Im Steven Jonathan Sihombing, a passionate Website Developer focused on creating 
-                intuitive and engaging user experiences. With expertise in both frontend and backend 
-                development, I strive to build digital solutions that combine aesthetics with functionality.
-              </p>
-              
-              <p className="text-gray-300 leading-relaxed animate-fade-in-up opacity-0" style={{ animationDelay: '0.5s', animationFillMode: 'forwards' }}>
-                Currently, I am a second-year Computer Science student at the Diponegoro University, 
-                keenly interested in technology, particularly in Software Engineering and Data Science. 
-                Im dedicated to enhancing both my hard and soft skills during my studies.
-              </p>
-              
-              <p className="text-gray-300 leading-relaxed animate-fade-in-up opacity-0" style={{ animationDelay: '0.7s', animationFillMode: 'forwards' }}>
-                Demonstrated strong collaboration, management, and 
-                communication skills through coordination experience. 
-                Shows a strong desire for continuous learning and self-development.
-              </p>
+        </motion.div>
+
+        {/* Bio + Education */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
+          {/* Left — Bio */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h3 className="text-2xl font-bold text-white mb-6">{t.about.heading}</h3>
+            <div className="space-y-4 text-[#aaa] leading-relaxed">
+              <p>{t.about.bio1}</p>
+              <p>{t.about.bio2}</p>
+              <p>{t.about.bio3}</p>
             </div>
-          </div>
-          
-          {/* Right Column - Education & Skills */}
-          <div className={`flex flex-col gap-6 transition-all duration-1000 ${mounted ? 'animate-slide-in-right' : 'opacity-0 translate-x-[50px]'}`}>
-            {/* Education Card */}
-            <div className="flex items-center p-4 bg-gray-800/50 rounded-xl hover:bg-gray-700/50 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg hover:shadow-blue-500/20 animate-fade-in-up opacity-0" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
-              <div className="mr-4 w-16 h-16 overflow-hidden rounded-full flex items-center justify-center animate-pulse-slow">
-                <img 
-                  src="/images/logo undip 1.jpg" 
-                  alt="University Logo" 
-                  className="object-cover w-full h-full transition-transform duration-300 hover:scale-110" 
-                  style={{ objectFit: 'contain' }}
+          </motion.div>
+
+          {/* Right — Education card */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="flex flex-col justify-center"
+          >
+            <motion.div
+              whileHover={{ y: -4, boxShadow: '0 16px 40px rgba(232,160,32,0.1)' }}
+              className="bg-[#1c1c1c] border border-[#2a2a2a] rounded-xl p-6 flex items-center gap-5 transition-shadow"
+            >
+              <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-gold/30 flex-shrink-0">
+                <img
+                  src="/images/logo undip 1.jpg"
+                  alt="Undip Logo"
+                  className="w-full h-full object-contain"
                 />
               </div>
               <div>
-                <h4 className="text-xl font-semibold text-white">Diponegoro University</h4>
-                <p className="text-gray-400">Faculty of Computer Science</p>
-                <p className="text-blue-400 text-sm mt-1 animate-pulse">2023 - Present</p>
+                <h4 className="text-white font-bold text-lg">{t.about.university}</h4>
+                <p className="text-[#777] text-sm">{t.about.faculty}</p>
+                <p className="text-gold text-sm mt-1 font-medium">{t.about.period}</p>
               </div>
-            </div>
-            
-            {/* Skills Card */}
-            <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-blue-500/10 transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 animate-fade-in-up" style={{ animationFillMode: 'forwards' }}>
-              <h3 className="text-2xl font-bold text-white mb-6 flex items-center animate-text-glow">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 mr-3 text-purple-400 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                </svg>
-                Technical Skills
-              </h3>
-              
-              <div className="grid grid-cols-2 gap-4">
-                {/* Frontend */}
-                <SkillCategory 
-                  title="Frontend"
-                  skills={["React", "NextJS", "TailwindCSS", "JavaScript"]}
-                  delay="0.8s"
-                />
-                
-                {/* Backend */}
-                <SkillCategory 
-                  title="Backend"
-                  skills={["Node.js", "ExpressJS", "MongoDB", "SQL"]}
-                  delay="1.0s"
-                />
-                
-                {/* Design */}
-                <SkillCategory 
-                  title="Design"
-                  skills={["Figma", "Canva", "UI/UX"]}
-                  delay="1.2s"
-                />
-                
-                {/* Other */}
-                <SkillCategory 
-                  title="Other"
-                  skills={["Git", "Docker", "Agile"]}
-                  delay="1.4s"
-                />
-              </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
 
+        {/* Skills Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="section-divider" />
+          <h3 className="text-3xl font-bold text-white mb-10">{t.about.skillsTitle}</h3>
 
-      </section>
-
-      {/* CSS Animations - Same as landing page */}
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          33% { transform: translateY(-20px) rotate(120deg); }
-          66% { transform: translateY(-10px) rotate(240deg); }
-        }
-        
-        @keyframes float-delayed {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          33% { transform: translateY(-15px) rotate(-120deg); }
-          66% { transform: translateY(-25px) rotate(-240deg); }
-        }
-        
-        @keyframes twinkle {
-          0%, 100% { opacity: 0; transform: scale(0); }
-          50% { opacity: 1; transform: scale(1); }
-        }
-        
-        @keyframes slide-in-left {
-          from { opacity: 0; transform: translateX(-50px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-        
-        @keyframes slide-in-right {
-          from { opacity: 0; transform: translateX(50px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-        
-        @keyframes fade-in-up {
-          from { opacity: 0; transform: translateY(30px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes gradient-shift {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-        
-        @keyframes text-glow {
-          0%, 100% { text-shadow: 0 0 5px rgba(59, 130, 246, 0.3); }
-          50% { text-shadow: 0 0 20px rgba(59, 130, 246, 0.6), 0 0 30px rgba(147, 51, 234, 0.4); }
-        }
-        
-        @keyframes pulse-slow {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.02); }
-        }
-        
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-        
-        .animate-float-delayed {
-          animation: float-delayed 8s ease-in-out infinite;
-        }
-        
-        .animate-twinkle {
-          animation: twinkle 3s ease-in-out infinite;
-        }
-        
-        .animate-slide-in-left {
-          animation: slide-in-left 1s ease-out forwards;
-        }
-        
-        .animate-slide-in-right {
-          animation: slide-in-right 1s ease-out forwards;
-        }
-        
-        .animate-fade-in-up {
-          animation: fade-in-up 1s ease-out forwards;
-        }
-        
-        .animate-fade-in-up-delayed {
-          animation: fade-in-up 1s ease-out 0.8s forwards;
-          opacity: 0;
-        }
-        
-        .animate-gradient-shift {
-          background-size: 200% 200%;
-          animation: gradient-shift 3s ease infinite;
-        }
-        
-        .animate-text-glow {
-          animation: text-glow 2s ease-in-out infinite;
-        }
-        
-        .animate-pulse-slow {
-          animation: pulse-slow 3s ease-in-out infinite;
-        }
-      `}</style>
-    </>
-  );
-};
-
-const SkillCategory = ({ title, skills, delay } : any) => {
-  return (
-    <div className="p-4 bg-gray-800/50 rounded-xl hover:bg-gray-700/50 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg hover:shadow-purple-500/20 animate-fade-in-up" style={{ animationDelay: delay, animationFillMode: 'forwards' }}>
-      <h4 className="text-lg font-semibold text-white mb-3">{title}</h4>
-      <div className="flex flex-wrap gap-2">
-        {skills.map((skill: string, index: number) => ( // Corrected destructuring
-          <Pill key={index} text={skill} delay={`${parseFloat(delay) + index * 0.1}s`} />
-        ))}
+          <motion.div
+            className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            style={{ perspective: '800px' }}
+          >
+            {skills.map((skill) => (
+              <SkillCard key={skill.name} skill={skill} />
+            ))}
+          </motion.div>
+        </motion.div>
       </div>
-    </div>
-  );
-};
-
-const Pill = ({ text, delay } : any) => {
-  return (
-    <span 
-      className="bg-gray-700 text-blue-300 text-xs px-3 py-1 rounded-full hover:bg-blue-600 hover:text-white transition-all duration-300 transform hover:scale-105 animate-fade-in-up" 
-      style={{ animationDelay: delay, animationFillMode: 'forwards' }}
-    >
-      {text}
-    </span>
+    </section>
   );
 };
 

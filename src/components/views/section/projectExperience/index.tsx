@@ -1,533 +1,536 @@
-import React, { useState, useEffect } from 'react';
-import {
-  FaChevronRight,
-  FaGlobe,
-  FaBrain,
-  FaVoteYea,
-  FaUsers,
-  FaCode,
-  FaCalendarAlt,
-  FaMapMarkerAlt,
-  FaTimes,
-  FaHandsHelping,
-  FaGraduationCap,
-  FaMicrophone,
-} from 'react-icons/fa';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaChevronRight, FaTimes, FaCalendarAlt, FaMapMarkerAlt, FaExternalLinkAlt } from 'react-icons/fa';
+import { useLocale } from '@/context/LocaleContext';
 
-const ProjectsExperiencesSection = () => {
-  const [activeTab, setActiveTab] = useState('it-projects');
-  const [modalOpen, setModalOpen] = useState(false);
-  const [selectedExperience, setSelectedExperience] = useState<any>(null);
-  const [mounted, setMounted] = useState(false);
+/* ─── Types ─────────────────────────────────────────────────── */
+interface ProjectDetail {
+  challenge: string;
+  solution: string;
+  skillGained: string;
+}
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+interface ItProject {
+  id: number;
+  title: string;
+  image: string;
+  tags: string[];
+  link: string;
+  featured: boolean;
+  descKey: keyof ReturnType<typeof getProjectContent>;
+}
 
-  const itProjects = [
-    {
-      id: 1,
-      title: 'Portfolio Website',
-      image: '/images/Porto.png',
-      description:
-        "This website serves as a platform to share insights into my personal journey and document the progress I've made throughout my exploration of the dynamic world of software engineering.",
-      tags: ['React', 'Next.js', 'Tailwind CSS'],
-      link: '/',
-    },
-    {
-      id: 2,
-      title: 'BoxSL Website',
-      image: '/images/boxsl.png',
-      description:
-        'E-commerce web platform designed to virtually showcase products to potential customers. Built to enhance product visibility and engagement, the website allows businesses to present their offerings in a compelling and interactive format. With a focus on user-friendly design and digital presentation, BOXSL aims to bridge the gap between products and consumers in the online marketplace.',
-      tags: ['React', 'Next.js', 'Tailwind CSS'],
-      link: 'https://boxsl.id',
-    },
-    {
-      id: 3,
-      title: 'DCF Undip 2025',
-      image: '/images/dcfundip.png',
-      description:
-        'Web platform developed for the Chemistry Olympiad organized by the Department of Chemistry at Diponegoro University. This website serves as a central hub for participants to access event information, guidelines, and updates, while also providing a streamlined registration process. Designed with accessibility and clarity in mind, DCF Undip 2025 ensures a smooth and informative experience for all prospective participants.',
-      tags: ['React', 'Next.js', 'Tailwind CSS', 'Supabase'],
-      link: 'https://dcfundip2025.my.id',
-    },
-    {
-      id: 4,
-      title: 'CBT Airlangga Convention 2025',
-      image: '/images/convention.png',
-      description:
-        'This website was developed as a platform for conducting the quiz competition as part of the Airlangga Convention, an academic event organized by BEM Universitas Airlangga. The system provides an online CBT (Computer-Based Test) experience designed to facilitate smooth and fair competition management, ensuring accessibility and efficiency for all participants.',
-      tags: ['CSS', 'Moodle', 'Custom CBT System'],
-      link: 'https://cbt-airlangga-convention.my.id/',
-    },
-  ];
+interface NonItProject {
+  id: number;
+  title: string;
+  organization: string;
+  image: string;
+  period: string;
+  location: string;
+  descKey: keyof ReturnType<typeof getProjectContent>;
+  gallery: string[];
+}
 
+/* ─── Static project metadata (non-translatable) ────────────── */
+const IT_PROJECTS: ItProject[] = [
+  {
+    id: 0,
+    title: 'Capex Dashboard (FTTH)',
+    image: '/images/web-dashboard-ftth.png',
+    tags: ['React', 'Next.js', 'Tailwind CSS', 'PostgreSQL', 'Prisma', 'JWT', 'Telegram Bot'],
+    link: 'https://dashboard-ftth.vercel.app/',
+    featured: true,
+    descKey: 'capex',
+  },
+  {
+    id: 1,
+    title: 'Portfolio Website',
+    image: '/images/Porto.png',
+    tags: ['Next.js', 'Tailwind CSS', 'Framer Motion', 'i18n'],
+    link: '/',
+    featured: false,
+    descKey: 'portfolio',
+  },
+  {
+    id: 2,
+    title: 'BoxSL Website',
+    image: '/images/boxsl.png',
+    tags: ['React', 'Next.js', 'Tailwind CSS'],
+    link: 'https://boxsl.id',
+    featured: false,
+    descKey: 'boxsl',
+  },
+  {
+    id: 3,
+    title: 'DCF Undip 2025',
+    image: '/images/dcfundip.png',
+    tags: ['React', 'Next.js', 'Tailwind CSS', 'Supabase'],
+    link: 'https://dcfundip2025.vercel.app/',
+    featured: false,
+    descKey: 'dcf',
+  },
+];
 
-  const nonItProjects = [
-    {
-      id: 1,
-      title: 'Informatics For The Orphanage 2024',
-      organization: 'Himpunan Mahasiswa Informatika',
-      image: '/images/INFO1.jpg',
-      period: '24 April 2024',
-      location: 'Gunung Pati, Semarang, Indonesia',
-      description:
-        'Led the Event Division team in planning schedules, creating detailed rundowns, and ensuring smooth execution of the event timeline. The program was dedicated to community engagement at a local orphanage, providing quality time and social activities for the children.',
-      achievements: [
-        'Successfully organized interactive games and bonding activities for over 50 children',
-        'Ensured seamless coordination across multiple sessions during the event day',
-        'Fostered a warm, inclusive environment to support the emotional well-being of orphans',
-      ],
-      gallery: ['/images/INFO1.jpg', '/images/INFO2.jpg', '/images/INFO3.jpg'],
-      icon: <FaHandsHelping className="text-green-400" />,
-    },
-    {
-      id: 2,
-      title: 'Informatics Care 2024',
-      organization: 'Himpunan Mahasiswa Informatika',
-      image: '/images/ICARE-1.JPG',
-      period: '22 June 2024 - 23 June 2024',
-      location: 'Semarang, Indonesia',
-      description:
-        'Served as the Project Leader of a two-day community service program conducted in a village in the Semarang region. The initiative aimed to foster student engagement with local communities through social interaction, public education, and humanitarian aid.',
-      achievements: [
-        'Coordinated the distribution of basic food supplies (sembako) to more than 40 families in need',
-        'Led educational sessions on technology and social awareness for local residents',
-        'Promoted community empathy by encouraging students to live and interact directly with villagers',
-      ],
-      gallery: ['/images/ICARE-1.JPG', '/images/ICARE-2.JPG', '/images/ICARE-3.JPG'],
-      icon: <FaGraduationCap className="text-blue-400" />,
-    }, 
-    {
-      id: 3,
-      title: 'Digital Content & Journalism Intern – Telkom Regional 4, Semarang',
-      organization: 'Telkom Indonesia',
-      image: '/images/telkom1.jpeg',
-      period: 'July 2025 - August 2025',
-      location: 'Semarang, Indonesia',
-      description:
-        'During my internship at Telkom Regional 4 Semarang, I was responsible for creating and managing digital journalism content to support the company’s internal and external communication. I collaborated with various divisions to produce accurate, engaging, and well-structured news materials while strengthening my skills in information management, teamwork, and digital communication within a corporate environment.',
-      achievements: [
-        'Covered and documented various corporate activities and events within Telkom Regional 4 Semarang.',
-        'Wrote and edited news articles for Telkom’s internal and external communication channels.',
-        'Collaborated with multiple divisions to ensure accuracy and clarity of published information.',
-        'Utilized digital tools to manage, organize, and publish news content efficiently.',
-        'Enhanced skills in information management, teamwork, and digital communication — valuable assets for my Informatics background.'
-      ],
-      gallery: ['/images/telkom1.jpeg', '/images/telkom2.jpeg'],
-      icon: <FaGraduationCap className="text-blue-400" />
-    }
-  ];
+const NON_IT_PROJECTS: NonItProject[] = [
+  {
+    id: 1,
+    title: 'Informatics For The Orphanage 2024',
+    organization: 'HMI Undip',
+    image: '/images/orphanage/INFO1.jpg',
+    period: 'April 24, 2024',
+    location: 'Gunung Pati, Semarang',
+    descKey: 'informatics_orphanage',
+    gallery: ['/images/orphanage/INFO1.jpg', '/images/orphanage/INFO2.jpg', '/images/orphanage/INFO3.jpg'],
+  },
+  {
+    id: 2,
+    title: 'Informatics Care 2024',
+    organization: 'HMI Undip',
+    image: '/images/icare/ICARE-1.JPG',
+    period: 'June 22–23, 2024',
+    location: 'Semarang',
+    descKey: 'informatics_care',
+    gallery: ['/images/icare/ICARE-1.JPG', '/images/icare/ICARE-2.JPG', '/images/icare/ICARE-3.JPG'],
+  },
+  {
+    id: 3,
+    title: 'Digital Journalism Intern — Telkom',
+    organization: 'Telkom Regional 4, Semarang',
+    image: '/images/telkom1.jpeg',
+    period: 'July–August 2025',
+    location: 'Semarang',
+    descKey: 'telkom_journalism',
+    gallery: ['/images/telkom1.jpeg', '/images/telkom2.jpeg'],
+  },
+  {
+    id: 4,
+    title: 'Web Developer Intern (FTTH Dashboard)',
+    organization: 'Telkom Regional 4, Semarang',
+    image: '/images/magang-ftth/pic1.jpeg',
+    period: 'Sep–Dec 2024',
+    location: 'Semarang',
+    descKey: 'telkom_webdev',
+    gallery: ['/images/magang-ftth/pic1.jpeg', '/images/magang-ftth/pic2.jpeg', '/images/magang-ftth/pic3.jpeg'],
+  }
+];
 
-  const openModal = (experience: any) => {
-    setSelectedExperience(experience);
-    setModalOpen(true);
-    document.body.style.overflow = 'hidden';
+/* ─── Helper: get translated project content from t ─────────── */
+function getProjectContent(t: any) {
+  return t.projects as {
+    capex: { description: string; details: ProjectDetail[] };
+    portfolio: { description: string; details: ProjectDetail[] };
+    boxsl: { description: string; details: ProjectDetail[] };
+    dcf: { description: string; details: ProjectDetail[] };
+    informatics_orphanage: { description: string; achievements: string[] };
+    informatics_care: { description: string; achievements: string[]; details: ProjectDetail[] };
+    telkom_journalism: { description: string; achievements: string[] };
+    telkom_content: { description: string; achievements: string[] };
+    [key: string]: any;
   };
+}
 
-  const closeModal = () => {
-    setModalOpen(false);
-    setSelectedExperience(null);
-    document.body.style.overflow = 'auto';
-  };
+/* ─── Project Details List ──────────────────────────────────── */
+const ProjectDetailsList = ({ details, t }: { details: ProjectDetail[]; t: any }) => (
+  <ol className="space-y-4 list-none">
+    {details.map((item, i) => (
+      <li key={i} className="rounded-xl bg-[#161616] border border-[#2a2a2a] overflow-hidden">
+        <div className="px-4 py-2 bg-[#1c1c1c] border-b border-[#2a2a2a] flex items-center gap-2">
+          <span className="w-5 h-5 rounded-full bg-gold/20 text-gold text-[10px] font-black flex items-center justify-center shrink-0">
+            {i + 1}
+          </span>
+          <span className="text-[#555] text-xs font-semibold uppercase tracking-wider">Item {i + 1}</span>
+        </div>
+        <div className="p-4 space-y-3">
+          <div className="flex gap-3">
+            <span className="text-gold font-black text-xs pt-[2px] shrink-0 w-[90px]">{t.projects.challengeLabel}</span>
+            <p className="text-[#aaa] text-sm leading-relaxed">{item.challenge}</p>
+          </div>
+          <div className="flex gap-3">
+            <span className="text-[#4ade80] font-black text-xs pt-[2px] shrink-0 w-[90px]">{t.projects.solutionLabel}</span>
+            <p className="text-[#aaa] text-sm leading-relaxed">{item.solution}</p>
+          </div>
+          <div className="flex gap-3">
+            <span className="text-[#60a5fa] font-black text-xs pt-[2px] shrink-0 w-[90px]">{t.projects.skillLabel}</span>
+            <p className="text-[#aaa] text-sm leading-relaxed">{item.skillGained}</p>
+          </div>
+        </div>
+      </li>
+    ))}
+  </ol>
+);
 
-  const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      closeModal();
-    }
-  };
-
-  const handleProjectLink = (link: string) => {
-    if (link === '/') {
-      window.location.href = link;
-    } else {
-      window.open(link, '_blank', 'noopener,noreferrer');
-    }
-  };
-
-  const getGridClasses = (itemCount: number) => {
-    if (itemCount === 1) {
-      return 'grid grid-cols-1 justify-items-center max-w-md mx-auto';
-    } else if (itemCount === 2) {
-      return 'grid grid-cols-1 sm:grid-cols-2 gap-8 justify-items-center max-w-3xl mx-auto';
-    } else {
-      return 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center max-w-7xl mx-auto';
-    }
-  };
+/* ─── IT Project Card ───────────────────────────────────────── */
+const ProjectCard = ({
+  project,
+  content,
+  openModal,
+}: {
+  project: ItProject;
+  content: { description: string; details?: ProjectDetail[] };
+  openModal: (p: ItProject, c: typeof content) => void;
+}) => {
+  const [hovered, setHovered] = useState(false);
+  const { t } = useLocale();
+  const firstDetail = content.details?.[0];
 
   return (
-    <>
-      <div id="projects" className="min-h-screen py-20 relative px-4 bg-gray-950">
-        {/* Background effects */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-          <div className="absolute top-1/4 left-1/3 w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 bg-purple-500 rounded-full filter blur-3xl opacity-10 animate-float"></div>
-          <div className="absolute bottom-1/4 right-1/3 w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 bg-blue-500 rounded-full filter blur-3xl opacity-10 animate-float-delayed"></div>
-          
-          <div className="absolute inset-0">
-            {[...Array(12)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute w-1 h-1 bg-blue-400 rounded-full animate-twinkle"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 3}s`,
-                  animationDuration: `${2 + Math.random() * 2}s`
-                }}
-              ></div>
-            ))}
-          </div>
-          
-          <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-purple-500/10 to-transparent"></div>
-          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-blue-500/10 to-transparent"></div>
-        </div>
-
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className={`text-center mb-12 transition-all duration-1000 ${mounted ? 'animate-fade-in-up' : 'opacity-0 translate-y-[30px]'}`}>
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 animate-text-glow">
-              My <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 animate-gradient-shift">Projects</span>
-            </h2>
-            <div className="w-20 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto animate-pulse-slow"></div>
-            <p className="text-gray-400 mt-4 max-w-2xl mx-auto">
-              Showcasing my technical and non-technical projects.
-            </p>
-          </div>
-
-          <div className={`flex justify-center mb-12 transition-all duration-1000 ${mounted ? 'animate-fade-in-up' : 'opacity-0 translate-y-[30px]'}`} style={{ animationDelay: '0.3s', animationFillMode: 'forwards' }}>
-            <div className="inline-flex bg-gray-800/50 backdrop-blur-sm rounded-full p-1 border border-gray-700/50 hover:border-blue-500/30 transition-all duration-300">
-              <button
-                onClick={() => setActiveTab('it-projects')}
-                className={`px-6 py-2 rounded-full transition-all duration-300 transform hover:scale-105 ${
-                  activeTab === 'it-projects'
-                    ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium shadow-lg shadow-blue-500/25'
-                    : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
-                }`}
-              >
-                IT Projects
-              </button>
-              <button
-                onClick={() => setActiveTab('non-it-projects')}
-                className={`px-6 py-2 rounded-full transition-all duration-300 transform hover:scale-105 ${
-                  activeTab === 'non-it-projects'
-                    ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium shadow-lg shadow-blue-500/25'
-                    : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
-                }`}
-              >
-                Non-IT Projects
-              </button>
-            </div>
-          </div>
-
-          {activeTab === 'it-projects' && (
-            <div className={getGridClasses(itProjects.length)}>
-              {itProjects.map((project, index) => (
-                <ProjectCard 
-                  key={project.id} 
-                  project={project} 
-                  onLinkClick={handleProjectLink}
-                  index={index}
-                  mounted={mounted}
-                />
-              ))}
-            </div>
-          )}
-
-          {activeTab === 'non-it-projects' && (
-            <div className={getGridClasses(nonItProjects.length)}>
-              {nonItProjects.map((project, index) => (
-                <SocialExperienceCard 
-                  key={project.id} 
-                  experience={project} 
-                  onClick={() => openModal(project)}
-                  index={index}
-                  mounted={mounted}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-
-      {modalOpen && selectedExperience && (
-        <div 
-          className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-[9999]"
-          onClick={handleBackdropClick}
-        >
-          <div 
-            className="relative bg-gray-900 border border-gray-800 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto z-[10000]"
-          >
-            <button
-              onClick={closeModal}
-              aria-label="Close modal"
-              className="absolute top-4 right-4 text-gray-400 hover:text-white bg-gray-800/80 p-2 rounded-full transition-all duration-300 z-20 transform hover:scale-110 hover:bg-red-500/20"
-            >
-              <FaTimes />
-            </button>
-
-            <div className="relative h-64 z-0">
-              <img
-                src={selectedExperience.image}
-                alt={selectedExperience.title}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-90 z-10"></div>
-              <div className="absolute bottom-0 left-0 w-full p-6 z-20">
-                <div className="flex items-center mb-2">
-                  <div className="mr-4 bg-gray-800/80 backdrop-blur-sm p-3 rounded-full animate-pulse-slow">
-                    {selectedExperience.icon}
-                  </div>
-                  <div>
-                    <h2 className="text-white font-bold text-2xl md:text-3xl animate-text-glow">{selectedExperience.title}</h2>
-                    <h3 className="text-blue-400 font-medium text-lg hover:text-purple-400 transition-colors duration-300">{selectedExperience.organization}</h3>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-6">
-              <div className="flex flex-wrap items-center text-gray-400 text-sm mb-6 gap-y-2">
-                <div className="flex items-center mr-6 hover:text-gray-300 transition-colors duration-300">
-                  <FaCalendarAlt className="mr-2 text-blue-400" />
-                  <span>{selectedExperience.period}</span>
-                </div>
-                <div className="flex items-center hover:text-gray-300 transition-colors duration-300">
-                  <FaMapMarkerAlt className="mr-2 text-blue-400" />
-                  <span>{selectedExperience.location}</span>
-                </div>
-              </div>
-
-              <div className="mb-8">
-                <h4 className="text-white font-bold text-xl mb-3 animate-text-glow">Description</h4>
-                <p className="text-gray-400 hover:text-gray-300 transition-colors duration-300">{selectedExperience.description}</p>
-              </div>
-
-              {selectedExperience.achievements && selectedExperience.achievements.length > 0 && (
-                <div className="mb-8">
-                  <h4 className="text-white font-bold text-xl mb-3 animate-text-glow">Key Achievements</h4>
-                  <ul className="space-y-2">
-                    {selectedExperience.achievements.map((achievement: string, index: number) => (
-                      <li key={index} className="flex items-start hover:text-gray-300 transition-colors duration-300">
-                        <span className="text-blue-400 mr-2 animate-pulse-slow">•</span>
-                        <span className="text-gray-400">{achievement}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {selectedExperience.gallery && selectedExperience.gallery.length > 0 && (
-                <div className="mb-6">
-                  <h4 className="text-white font-bold text-xl mb-4 animate-text-glow">Gallery</h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                    {selectedExperience.gallery.map((image: string, index: number) => (
-                      <div key={index} className="rounded-lg overflow-hidden border border-gray-800 aspect-video hover:border-blue-500/50 transition-all duration-300 transform hover:scale-105">
-                        <img
-                          src={image}
-                          alt={`Gallery image ${index + 1}`}
-                          className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* CSS Animations */}
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          33% { transform: translateY(-20px) rotate(120deg); }
-          66% { transform: translateY(-10px) rotate(240deg); }
-        }
-        
-        @keyframes float-delayed {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          33% { transform: translateY(-15px) rotate(-120deg); }
-          66% { transform: translateY(-25px) rotate(-240deg); }
-        }
-        
-        @keyframes twinkle {
-          0%, 100% { opacity: 0; transform: scale(0); }
-          50% { opacity: 1; transform: scale(1); }
-        }
-        
-        @keyframes slide-in-up {
-          from { opacity: 0; transform: translateY(50px) scale(0.9); }
-          to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-        
-        @keyframes fade-in-up {
-          from { opacity: 0; transform: translateY(30px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes gradient-shift {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-        
-        @keyframes text-glow {
-          0%, 100% { text-shadow: 0 0 5px rgba(59, 130, 246, 0.3); }
-          50% { text-shadow: 0 0 20px rgba(59, 130, 246, 0.6), 0 0 30px rgba(147, 51, 234, 0.4); }
-        }
-        
-        @keyframes pulse-slow {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.02); }
-        }
-        
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-        
-        .animate-float-delayed {
-          animation: float-delayed 8s ease-in-out infinite;
-        }
-        
-        .animate-twinkle {
-          animation: twinkle 3s ease-in-out infinite;
-        }
-        
-        .animate-slide-in-up {
-          animation: slide-in-up 0.8s ease-out forwards;
-        }
-        
-        .animate-fade-in-up {
-          animation: fade-in-up 1s ease-out forwards;
-        }
-        
-        .animate-gradient-shift {
-          background-size: 200% 200%;
-          animation: gradient-shift 3s ease infinite;
-        }
-        
-        .animate-text-glow {
-          animation: text-glow 2s ease-in-out infinite;
-        }
-        
-        .animate-pulse-slow {
-          animation: pulse-slow 3s ease-in-out infinite;
-        }
-      `}</style>
-    </>
-  );
-};
-
-const ProjectCard = ({ project, onLinkClick, index, mounted }: any) => {
-  const getProjectIcon = (title: string) => {
-    if (title.includes('Portfolio')) return <FaGlobe className="text-blue-400" />;
-    if (title.includes('Mindora AI')) return <FaBrain className="text-green-400" />;
-    if (title.includes('Pemilos')) return <FaVoteYea className="text-purple-400" />;
-    return <FaCode className="text-blue-400" />;
-  };
-
-  return (
-    <div 
-      className="relative bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl overflow-hidden group hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-500 transform hover:-translate-y-2 hover:scale-105 hover:border-blue-500/30 w-full max-w-sm mx-auto"
-      style={{ 
-        zIndex: 10,
-        animation: mounted ? `slide-in-up 0.8s ease-out ${0.5 + index * 0.2}s forwards` : 'none',
-        opacity: mounted ? 1 : 0
-      }}
+    <motion.div
+      className={`relative bg-[#1c1c1c] border border-[#2a2a2a] rounded-xl overflow-hidden cursor-pointer ${
+        project.featured ? 'lg:col-span-2 lg:row-span-1' : ''
+      }`}
+      whileHover={{ y: -6, boxShadow: '0 20px 60px rgba(232,160,32,0.15)', borderColor: 'rgba(232,160,32,0.4)' }}
+      transition={{ duration: 0.3 }}
+      onHoverStart={() => setHovered(true)}
+      onHoverEnd={() => setHovered(false)}
     >
-      <div className="relative overflow-hidden h-48 z-0">
-        <img
+      <div className={`relative overflow-hidden ${project.featured ? 'h-56' : 'h-44'}`}>
+        <motion.img
           src={project.image}
           alt={project.title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          className="w-full h-full object-cover"
+          animate={{ scale: hovered ? 1.05 : 1 }}
+          transition={{ duration: 0.4 }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-80 group-hover:opacity-70 transition-opacity duration-300 z-10"></div>
-        <div className="absolute bottom-0 left-0 w-full p-4 flex items-center z-20">
-          <div className="mr-3 bg-gray-800/80 backdrop-blur-sm p-2 rounded-full group-hover:bg-blue-500/20 transition-all duration-300 transform group-hover:scale-110 animate-pulse-slow">
-            {getProjectIcon(project.title)}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#1c1c1c] via-[#1c1c1c]/30 to-transparent" />
+
+        <AnimatePresence>
+          {hovered && firstDetail && (
+            <motion.div
+              className="absolute inset-0 bg-[#111]/95 flex flex-col justify-center p-5"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <p className="text-gold text-xs font-bold uppercase tracking-wider mb-2">
+                {t.projects.challengeLabel}
+              </p>
+              <p className="text-[#ccc] text-sm leading-relaxed line-clamp-5">
+                {firstDetail.challenge}
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {project.featured && (
+          <div className="absolute top-3 left-3 bg-gold text-[#111] text-xs font-bold px-2.5 py-1 rounded">
+            Featured
           </div>
-          <h3 className="text-white font-bold text-lg truncate group-hover:text-blue-300 transition-colors duration-300">{project.title}</h3>
-        </div>
+        )}
       </div>
 
-      <div className="p-6">
-        <p className="text-gray-400 mb-4 line-clamp-3 h-18 group-hover:text-gray-300 transition-colors duration-300">{project.description}</p>
+      <div className="p-5">
+        <h3 className="text-white font-bold text-base mb-2">{project.title}</h3>
+        <p className="text-[#777] text-sm leading-relaxed mb-4 line-clamp-2">{content.description}</p>
 
-        <div className="mb-4 flex flex-wrap gap-2">
-          {project.tags.map((tag: string, tagIndex: number) => (
-            <span
-              key={tagIndex}
-              className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-blue-900/30 text-blue-300 border border-blue-800/50 hover:bg-blue-800/40 hover:border-blue-600/60 hover:text-blue-200 transition-all duration-300 transform hover:scale-105 animate-pulse-slow"
-              style={{ animationDelay: `${tagIndex * 0.1}s` }}
-            >
+        <div className="flex flex-wrap gap-1.5 mb-4">
+          {project.tags.map((tag) => (
+            <span key={tag} className="text-[10px] font-semibold px-2 py-0.5 rounded bg-[#2a2a2a] text-[#aaa] border border-[#333]">
               {tag}
             </span>
           ))}
         </div>
 
-        <button
-          onClick={() => onLinkClick(project.link)}
-          className="inline-flex items-center text-sm text-blue-400 hover:text-blue-300 font-medium transition-all duration-300 cursor-pointer transform hover:translate-x-1 group/button"
-        >
-          View Project 
-          <FaChevronRight className="ml-1 text-xs transition-transform duration-300 group-hover/button:translate-x-1" />
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => openModal(project, content)}
+            className="text-gold text-sm font-medium flex items-center gap-1 hover:text-gold-light transition-colors"
+          >
+            {t.projects.viewDetails} <FaChevronRight className="text-xs" />
+          </button>
+
+          {project.link && project.link !== '/' && (
+            <a
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#555] hover:text-white text-sm transition-colors"
+              onClick={e => e.stopPropagation()}
+            >
+              <FaExternalLinkAlt className="text-xs" />
+            </a>
+          )}
+        </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
-const SocialExperienceCard = ({ experience, onClick, index, mounted }: any) => {
+/* ─── Non-IT Card ───────────────────────────────────────────── */
+const NonItCard = ({
+  project,
+  content,
+  openModal,
+}: {
+  project: NonItProject;
+  content: { description: string; achievements: string[]; details?: ProjectDetail[] };
+  openModal: (p: NonItProject, c: typeof content) => void;
+}) => {
+  const { t } = useLocale();
   return (
-    <div
-      className="relative bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl overflow-hidden group hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-500 transform hover:-translate-y-2 hover:scale-105 hover:border-blue-500/30 cursor-pointer w-full max-w-sm mx-auto"
-      style={{ 
-        zIndex: 10,
-        animation: mounted ? `slide-in-up 0.8s ease-out ${0.5 + index * 0.2}s forwards` : 'none',
-        opacity: mounted ? 1 : 0
-      }}
-      onClick={onClick}
+    <motion.div
+      className="bg-[#1c1c1c] border border-[#2a2a2a] rounded-xl overflow-hidden cursor-pointer"
+      whileHover={{ y: -6, boxShadow: '0 20px 60px rgba(232,160,32,0.15)', borderColor: 'rgba(232,160,32,0.4)' }}
+      transition={{ duration: 0.3 }}
+      onClick={() => openModal(project, content)}
     >
-      <div className="relative overflow-hidden h-48 z-0">
-        <img
-          src={experience.image}
-          alt={experience.title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-80 group-hover:opacity-70 transition-opacity duration-300 z-10"></div>
-        <div className="absolute bottom-0 left-0 w-full p-4 flex items-center z-20">
-          <div className="mr-3 bg-gray-800/80 backdrop-blur-sm p-2 rounded-full group-hover:bg-blue-500/20 transition-all duration-300 transform group-hover:scale-110 animate-pulse-slow">
-            {experience.icon}
-          </div>
-          <h3 className="text-white font-bold text-lg truncate group-hover:text-blue-300 transition-colors duration-300">{experience.title}</h3>
+      <div className="h-40 overflow-hidden">
+        <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
+      </div>
+      <div className="p-5">
+        <p className="text-gold text-xs font-bold mb-1">{project.organization}</p>
+        <h3 className="text-white font-bold text-base mb-2">{project.title}</h3>
+        <div className="flex flex-wrap gap-3 text-[#666] text-xs mb-3">
+          <span className="flex items-center gap-1"><FaCalendarAlt />{project.period}</span>
+          <span className="flex items-center gap-1"><FaMapMarkerAlt />{project.location}</span>
         </div>
+        <p className="text-[#777] text-sm line-clamp-2">{content.description}</p>
+        <button className="mt-3 text-gold text-sm font-medium flex items-center gap-1">
+          {t.projects.viewDetails} <FaChevronRight className="text-xs" />
+        </button>
+      </div>
+    </motion.div>
+  );
+};
+
+/* ─── Detail Modal ──────────────────────────────────────────── */
+const DetailModal = ({
+  project,
+  content,
+  onClose,
+  isIt,
+}: {
+  project: any;
+  content: any;
+  onClose: () => void;
+  isIt: boolean;
+}) => {
+  const { t } = useLocale();
+  return (
+    <motion.div
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
+    >
+      <motion.div
+        className="bg-[#1c1c1c] border border-[#2a2a2a] rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+        initial={{ scale: 0.9, y: 20 }}
+        animate={{ scale: 1, y: 0 }}
+        exit={{ scale: 0.9, y: 20 }}
+        transition={{ duration: 0.25 }}
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Hero image */}
+        <div className="relative h-56">
+          <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#1c1c1c] to-transparent" />
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 bg-[#1c1c1c]/80 text-white p-2 rounded-full hover:bg-red-500/30 transition-colors"
+          >
+            <FaTimes />
+          </button>
+          <div className="absolute bottom-4 left-6">
+            <h2 className="text-white font-bold text-2xl">{project.title}</h2>
+            {!isIt && <p className="text-gold text-sm mt-1">{project.organization}</p>}
+          </div>
+        </div>
+
+        <div className="p-6 space-y-5">
+          {!isIt && project.period && (
+            <div className="flex flex-wrap gap-4 text-[#777] text-sm">
+              <span className="flex items-center gap-2"><FaCalendarAlt className="text-gold" />{project.period}</span>
+              <span className="flex items-center gap-2"><FaMapMarkerAlt className="text-gold" />{project.location}</span>
+            </div>
+          )}
+
+          {isIt && project.tags && (
+            <div className="flex flex-wrap gap-1.5">
+              {project.tags.map((tag: string) => (
+                <span key={tag} className="text-xs px-2.5 py-1 rounded bg-[#2a2a2a] text-[#aaa] border border-[#333]">{tag}</span>
+              ))}
+            </div>
+          )}
+
+          <div>
+            <h4 className="text-white font-bold mb-2">{t.projects.descriptionLabel}</h4>
+            <p className="text-[#aaa] text-sm leading-relaxed">{content.description}</p>
+          </div>
+
+          {content.details && content.details.length > 0 && (
+            <div>
+              <h4 className="text-white font-bold mb-3">{t.projects.narrativeLabel}</h4>
+              <ProjectDetailsList details={content.details} t={t} />
+            </div>
+          )}
+
+          {content.achievements && (
+            <div>
+              <h4 className="text-white font-bold mb-2">{t.projects.achievementsLabel}</h4>
+              <ul className="space-y-1.5">
+                {content.achievements.map((a: string, i: number) => (
+                  <li key={i} className="flex items-start gap-2 text-[#aaa] text-sm">
+                    <span className="text-gold mt-1 text-xs">▸</span>{a}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {project.gallery && project.gallery.length > 0 && (
+            <div>
+              <h4 className="text-white font-bold mb-3">{t.projects.galleryLabel}</h4>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {project.gallery.map((img: string, i: number) => (
+                  <div key={i} className="aspect-video rounded-lg overflow-hidden border border-[#333]">
+                    <img src={img} alt={`Gallery ${i + 1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {isIt && project.link && project.link !== '/' && (
+            <a
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 btn-gold text-sm"
+            >
+              {t.projects.viewProject} <FaExternalLinkAlt className="text-xs" />
+            </a>
+          )}
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
+/* ─── Main Component ────────────────────────────────────────── */
+const ProjectsExperiencesSection = () => {
+  const [activeTab, setActiveTab] = useState<'it' | 'non-it'>('it');
+  const [modalState, setModalState] = useState<{ project: any; content: any; isIt: boolean } | null>(null);
+  const { t } = useLocale();
+
+  const projectContent = getProjectContent(t);
+
+  const openModal = (project: any, content: any, isIt: boolean) => {
+    setModalState({ project, content, isIt });
+    document.body.style.overflow = 'hidden';
+  };
+  const closeModal = () => {
+    setModalState(null);
+    document.body.style.overflow = '';
+  };
+
+  return (
+    <section id="projects" className="py-24 px-6 sm:px-10 lg:px-20 xl:px-32 bg-[#111]">
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mb-12"
+        >
+          <div className="section-divider" />
+          <h2 className="text-4xl sm:text-5xl font-extrabold text-white">
+            {t.projects.title}{' '}
+            <span className="text-gold">{t.projects.titleHighlight}</span>
+          </h2>
+          <p className="text-[#777] mt-3 max-w-xl">{t.projects.subtitle}</p>
+        </motion.div>
+
+        {/* Tabs */}
+        <div className="flex gap-1 mb-10 border-b border-[#2a2a2a]">
+          {[{ key: 'it', label: t.projects.itTab }, { key: 'non-it', label: t.projects.nonItTab }].map(({ key, label }) => (
+            <button
+              key={key}
+              onClick={() => setActiveTab(key as 'it' | 'non-it')}
+              className={`px-5 py-2.5 text-sm font-semibold border-b-2 transition-all -mb-px ${
+                activeTab === key
+                  ? 'border-gold text-gold'
+                  : 'border-transparent text-[#555] hover:text-[#aaa]'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+
+        {/* IT Projects grid */}
+        {activeTab === 'it' && (
+          <motion.div
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4 }}
+          >
+            {IT_PROJECTS.map((project, i) => {
+              const content = projectContent[project.descKey];
+              return (
+                <motion.div
+                  key={project.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: i * 0.08 }}
+                  className={project.featured ? 'sm:col-span-2' : ''}
+                >
+                  <ProjectCard
+                    project={project}
+                    content={content}
+                    openModal={(p, c) => openModal(p, c, true)}
+                  />
+                </motion.div>
+              );
+            })}
+          </motion.div>
+        )}
+
+        {/* Non-IT grid */}
+        {activeTab === 'non-it' && (
+          <motion.div
+            className="grid grid-cols-1 sm:grid-cols-2 gap-5"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4 }}
+          >
+            {NON_IT_PROJECTS.map((project, i) => {
+              const content = projectContent[project.descKey];
+              return (
+                <motion.div
+                  key={project.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: i * 0.08 }}
+                >
+                  <NonItCard
+                    project={project}
+                    content={content}
+                    openModal={(p, c) => openModal(p, c, false)}
+                  />
+                </motion.div>
+              );
+            })}
+          </motion.div>
+        )}
       </div>
 
-      <div className="p-6">
-        <div className="flex items-center mb-4">
-          <h4 className="text-blue-400 font-medium text-base group-hover:text-purple-400 transition-colors duration-300">{experience.organization}</h4>
-        </div>
-
-        <div className="space-y-2 mb-4">
-          <div className="flex items-center text-gray-300 text-sm group-hover:text-gray-200 transition-colors duration-300">
-            <FaCalendarAlt className="mr-3 text-blue-400 text-sm flex-shrink-0 group-hover:text-purple-400 transition-colors duration-300" />
-            <span className="leading-relaxed">{experience.period}</span>
-          </div>
-          <div className="flex items-center text-gray-300 text-sm group-hover:text-gray-200 transition-colors duration-300">
-            <FaMapMarkerAlt className="mr-3 text-blue-400 text-sm flex-shrink-0 group-hover:text-purple-400 transition-colors duration-300" />
-            <span className="leading-relaxed">{experience.location}</span>
-          </div>
-        </div>
-
-        <p className="text-gray-400 mb-6 line-clamp-3 group-hover:text-gray-300 transition-colors duration-300">{experience.description}</p>
-
-        <div className="inline-flex items-center text-sm text-blue-400 hover:text-blue-300 font-medium transition-all duration-300 transform hover:translate-x-1 group/button">
-          View Details 
-          <FaChevronRight className="ml-1 text-xs transition-transform duration-300 group-hover/button:translate-x-1" />
-        </div>
-      </div>
-    </div>
+      {/* Modal */}
+      <AnimatePresence>
+        {modalState && (
+          <DetailModal
+            project={modalState.project}
+            content={modalState.content}
+            onClose={closeModal}
+            isIt={modalState.isIt}
+          />
+        )}
+      </AnimatePresence>
+    </section>
   );
 };
 

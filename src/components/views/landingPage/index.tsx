@@ -1,14 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  FaGithub, 
-  FaInstagram, 
-  FaLinkedin, 
-  FaCode, 
-  FaLaptopCode, 
-  FaPalette, 
-  FaPencilRuler,
-  FaChevronDown
-} from 'react-icons/fa';
+import React, { useEffect, useState } from 'react';
+import { motion, type Variants } from 'framer-motion';
+import { FaGithub, FaInstagram, FaLinkedin, FaChevronDown } from 'react-icons/fa';
 
 import Sidebar from '@/components/fragments/navbar';
 import AboutMeSection from '../section/aboutme';
@@ -16,424 +8,198 @@ import ProjectsExperiencesSection from '../section/projectExperience';
 import ExperienceSection from '../section/experience';
 import ContactSection from '../section/contact';
 import MultiLanguageGreeting from '@/components/animation/multiLanguage';
+import { useLocale } from '@/context/LocaleContext';
+
+const socialLinks = [
+  { icon: <FaGithub />, href: 'https://github.com/StevenJ0', label: 'GitHub' },
+  { icon: <FaLinkedin />, href: 'https://www.linkedin.com/in/steven-sihombing', label: 'LinkedIn' },
+  { icon: <FaInstagram />, href: 'https://www.instagram.com/steven_shmb/', label: 'Instagram' },
+];
 
 const LandingPageView = () => {
   const [scrolled, setScrolled] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const { t } = useLocale();
 
   useEffect(() => {
-    setMounted(true);
-    const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
-    };
-
+    const handleScroll = () => setScrolled(window.scrollY > 80);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  return (
-    <div className="min-h-screen bg-gray-950 overflow-x-hidden">
-      <Sidebar />
-      
-      <main className="relative px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24 py-12 sm:py-16 md:py-20 mx-auto max-w-screen-2xl">
-        {/* Enhanced Background effects with animations */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-          {/* Animated glowing orbs */}
-          <div className="absolute top-1/4 left-1/4 w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 lg:w-96 lg:h-96 bg-purple-500 rounded-full filter blur-3xl opacity-10 animate-float"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 lg:w-96 lg:h-96 bg-blue-500 rounded-full filter blur-3xl opacity-10 animate-float-delayed"></div>
-          
-          {/* Animated particles */}
-          <div className="absolute inset-0">
-            {[...Array(20)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute w-1 h-1 bg-blue-400 rounded-full animate-twinkle"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 3}s`,
-                  animationDuration: `${2 + Math.random() * 2}s`
-                }}
-              ></div>
-            ))}
-          </div>
-          
-          {/* Grid pattern */}
-          <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-          
-          {/* Gradient at the top */}
-          <div className="absolute top-0 left-0 right-0 h-24 sm:h-32 bg-gradient-to-b from-blue-500/10 to-transparent"></div>
-        </div>
-        
-        {/* Scroll indicator */}
-        <div className={`fixed inset-x-0 bottom-6 sm:bottom-8 flex justify-center text-white transition-all duration-500 z-50 ${scrolled ? 'opacity-0 translate-y-2 pointer-events-none' : 'opacity-100 translate-y-0 animate-bounce'}`}>
-          <div className="flex flex-col items-center">
-            <span className="text-xs sm:text-sm mb-1 sm:mb-2 text-gray-400 animate-pulse">
-              Scroll down
-            </span>
-            <FaChevronDown className="text-lg sm:text-xl" />
-          </div>
-        </div>
+  const scrollToContact = () => {
+    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+  };
 
-        {/* Hero Section with entrance animations */}
-        <section id="home" className="min-h-[85vh] sm:min-h-[90vh] flex flex-col md:flex-row items-center justify-center md:justify-between relative z-10 pt-16 sm:pt-20 md:pt-0 px-4 sm:px-6">
-          {/* Left Content - Text */}
-          <div className={`w-full md:w-3/5 lg:w-2/5 text-white mb-10 sm:mb-12 md:mb-0 order-2 md:order-1 mt-6 sm:mt-8 md:mt-0 transition-all duration-1000 ${mounted ? 'animate-slide-in-left' : 'opacity-0 translate-x-[-50px]'}`}>
-            {/* Replace static greeting with animated MultiLanguageGreeting component */}
-            <MultiLanguageGreeting />
-          
-            {/* Name section with better responsive text sizing */}
-            <div className="mb-3 sm:mb-4">
-              <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-bold leading-tight animate-text-glow">
-                Im <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 animate-gradient-shift">
-                  Steven Jonathan Sihombing
-                </span>
+  // Framer-motion variants
+  const textVariants: Variants = {
+    hidden: { opacity: 0, x: -40 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: 'easeOut' } },
+  };
+  const photoVariants: Variants = {
+    hidden: { opacity: 0, x: 40 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: 'easeOut', delay: 0.2 } },
+  };
+  const floatVariants: Variants = {
+    float: {
+      y: [-10, 10, -10],
+      transition: { duration: 4, ease: 'easeInOut', repeat: Infinity },
+    },
+  };
+
+  return (
+    <div className="min-h-screen bg-[#121212] overflow-x-hidden">
+      <Sidebar />
+
+      {/* Scroll indicator */}
+      <motion.div
+        className="fixed inset-x-0 bottom-8 flex justify-center z-30 pointer-events-none"
+        animate={{ opacity: scrolled ? 0 : 1, y: scrolled ? 8 : 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        <div className="flex flex-col items-center gap-1">
+          <span className="text-xs text-[#555] tracking-widest uppercase">{t.hero.scrollDown}</span>
+          <motion.div animate={{ y: [0, 4, 0] }} transition={{ duration: 1.2, repeat: Infinity }}>
+            <FaChevronDown className="text-gold text-sm" />
+          </motion.div>
+        </div>
+      </motion.div>
+
+      <main className="lg:pl-16">
+        {/* ── HERO ─────────────────────────────────────────────── */}
+        <section id="home" className="min-h-screen flex items-center relative overflow-hidden px-6 sm:px-10 lg:px-20 xl:px-32">
+          {/* background grid */}
+          <div className="absolute inset-0 bg-grid-pattern opacity-100 pointer-events-none" />
+          {/* gold radial glow */}
+          <div className="absolute top-1/2 right-1/4 w-96 h-96 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="w-full flex flex-col-reverse md:flex-row items-center justify-between gap-12 md:gap-8 py-20 md:py-0">
+            {/* ── Left: Text ── */}
+            <motion.div
+              className="flex-1 max-w-xl"
+              variants={textVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <MultiLanguageGreeting />
+
+              <p className="text-[#aaa] text-sm font-semibold tracking-widest uppercase mb-3 mt-4">
+                {t.hero.iam}
+              </p>
+
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-4">
+                Steven <br/>
+                <span className="text-gold">Jonathan</span><br/>
+                Sihombing
               </h1>
-            </div>
-          
-            <h2 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 md:mb-6">
-              a <span className="text-blue-400 animate-pulse">Website Developer</span>
-            </h2>
-            
-            <p className="text-gray-400 mb-5 sm:mb-6 md:mb-8 max-w-md text-xs xs:text-sm sm:text-base md:text-lg animate-fade-in-up">
-              Crafting digital experiences that blend aesthetics with functionality. 
-              Specializing in intuitive interfaces and memorable user experiences.
-            </p>
-            
-            <div className="flex flex-wrap gap-2 sm:gap-3 md:gap-4 animate-fade-in-up-delayed">
-              <a 
-                href="/files/cv.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-full font-medium flex items-center space-x-1 sm:space-x-2 hover:shadow-lg hover:shadow-blue-500/20 transition-all transform hover:-translate-y-1 hover:scale-105 animate-pulse-slow"
+
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-px bg-gold" />
+                <p className="text-[#aaa] text-sm sm:text-base font-medium tracking-wide">
+                  {t.hero.role}
+                </p>
+              </div>
+
+              <p className="text-[#777] text-sm sm:text-base leading-relaxed mb-8 max-w-md">
+                {t.hero.bio}
+              </p>
+
+              <div className="flex items-center gap-4 flex-wrap">
+                <button onClick={scrollToContact} className="btn-gold text-sm sm:text-base">
+                  {t.hero.contactMe}
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                  </svg>
+                </button>
+
+                <a
+                  href="/files/cv.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-outline-gold text-sm sm:text-base"
+                >
+                  {t.hero.viewResume}
+                </a>
+              </div>
+            </motion.div>
+
+            {/* ── Right: Photo + Socials ── */}
+            <motion.div
+              className="flex-1 flex justify-center md:justify-end items-center gap-6 md:gap-8"
+              variants={photoVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              {/* Social strip */}
+              <div className="hidden sm:flex flex-col items-center gap-4">
+                <div className="w-px h-16 bg-[#2a2a2a]" />
+                {socialLinks.map((s, i) => (
+                  <a
+                    key={i}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={s.label}
+                    className="text-[#555] text-lg hover:text-gold transition-colors duration-200"
+                  >
+                    {s.icon}
+                  </a>
+                ))}
+                <div className="w-px h-16 bg-[#2a2a2a]" />
+              </div>
+
+              {/* Profile image — floating */}
+              <motion.div
+                className="relative"
+                variants={floatVariants}
+                animate="float"
               >
-                <span className="text-xs sm:text-sm md:text-base">View Resume</span>
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </a>
-            </div>
-            
-            {/* Skills Section with staggered animation */}
-            <div className="mt-6 sm:mt-8 md:mt-12 flex flex-wrap gap-2 sm:gap-3">
-              <Skill icon={<FaLaptopCode />} text="UI Design" delay="0.1s" />
-              <Skill icon={<FaPalette />} text="UX Research" delay="0.2s" />
-              <Skill icon={<FaPencilRuler />} text="Prototyping" delay="0.3s" />
-              <Skill icon={<FaCode />} text="Frontend" delay="0.4s" />
-            </div>
-          </div>
-          
-          {/* Right Content - Profile Image and Social Media */}
-          <div className={`relative w-full md:w-2/5 flex justify-center items-center order-1 md:order-2 mb-6 sm:mb-8 md:mb-0 transition-all duration-1000 ${mounted ? 'animate-slide-in-right' : 'opacity-0 translate-x-[50px]'}`}>
-            <ProfileSection />
+                {/* Gold ring */}
+                <div className="absolute -inset-3 rounded-full border border-gold/20" />
+                <div className="absolute -inset-6 rounded-full border border-gold/10" />
+
+                {/* Gold background blob */}
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-72 h-40 bg-gold/15 rounded-full blur-2xl" />
+
+                {/* Image */}
+                <div className="relative w-56 h-56 sm:w-72 sm:h-72 lg:w-80 lg:h-80 rounded-full overflow-hidden border-2 border-gold/30 shadow-gold-lg">
+                  <img
+                    src="/images/steven.jpg"
+                    alt="Steven Jonathan Sihombing"
+                    className="w-full h-full object-cover"
+                  />
+                  {/* Bottom gradient blend */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#121212]/40 via-transparent to-transparent" />
+                </div>
+
+                {/* Floating badge */}
+                <motion.div
+                  className="absolute -bottom-4 -left-4 bg-[#1c1c1c] border border-[#2a2a2a] rounded-lg px-3 py-2 shadow-lg"
+                  animate={{ y: [-4, 4, -4] }}
+                  transition={{ duration: 3, ease: 'easeInOut', repeat: Infinity, delay: 1 }}
+                >
+                  <p className="text-gold font-bold text-sm">{t.hero.badgeYears}</p>
+                  <p className="text-[#666] text-xs">{t.hero.badgeYearsLabel}</p>
+                </motion.div>
+
+                <motion.div
+                  className="absolute -top-4 -right-4 bg-[#1c1c1c] border border-[#2a2a2a] rounded-lg px-3 py-2 shadow-lg"
+                  animate={{ y: [4, -4, 4] }}
+                  transition={{ duration: 3.5, ease: 'easeInOut', repeat: Infinity, delay: 0.5 }}
+                >
+                  <p className="text-gold font-bold text-sm">{t.hero.badgeProjects}</p>
+                  <p className="text-[#666] text-xs">{t.hero.badgeProjectsLabel}</p>
+                </motion.div>
+              </motion.div>
+            </motion.div>
           </div>
         </section>
-        
-        {/* About Me Section */}
+
+        {/* ── OTHER SECTIONS ───────────────────────────────────── */}
         <AboutMeSection />
-
-        {/* Project Experience Section */}
-        <div className='z-100'>
-          <ProjectsExperiencesSection />
-        </div>
-
-        {/* Experience Section */}
+        <div className="relative z-10"><ProjectsExperiencesSection /></div>
         <ExperienceSection />
-
-        {/* Contact Section */}
         <ContactSection />
-        
       </main>
-
-      {/* CSS Animations */}
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          33% { transform: translateY(-20px) rotate(120deg); }
-          66% { transform: translateY(-10px) rotate(240deg); }
-        }
-        
-        @keyframes float-delayed {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          33% { transform: translateY(-15px) rotate(-120deg); }
-          66% { transform: translateY(-25px) rotate(-240deg); }
-        }
-        
-        @keyframes twinkle {
-          0%, 100% { opacity: 0; transform: scale(0); }
-          50% { opacity: 1; transform: scale(1); }
-        }
-        
-        @keyframes slide-in-left {
-          from { opacity: 0; transform: translateX(-50px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-        
-        @keyframes slide-in-right {
-          from { opacity: 0; transform: translateX(50px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-        
-        @keyframes fade-in-up {
-          from { opacity: 0; transform: translateY(30px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes gradient-shift {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-        
-        @keyframes text-glow {
-          0%, 100% { text-shadow: 0 0 5px rgba(59, 130, 246, 0.3); }
-          50% { text-shadow: 0 0 20px rgba(59, 130, 246, 0.6), 0 0 30px rgba(147, 51, 234, 0.4); }
-        }
-        
-        @keyframes pulse-slow {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.02); }
-        }
-        
-        @keyframes spin-slow {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        
-        @keyframes spin-slow-reverse {
-          from { transform: rotate(360deg); }
-          to { transform: rotate(0deg); }
-        }
-        
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-        
-        .animate-float-delayed {
-          animation: float-delayed 8s ease-in-out infinite;
-        }
-        
-        .animate-twinkle {
-          animation: twinkle 3s ease-in-out infinite;
-        }
-        
-        .animate-slide-in-left {
-          animation: slide-in-left 1s ease-out forwards;
-        }
-        
-        .animate-slide-in-right {
-          animation: slide-in-right 1s ease-out forwards;
-        }
-        
-        .animate-fade-in-up {
-          animation: fade-in-up 1s ease-out 0.5s forwards;
-          opacity: 0;
-        }
-        
-        .animate-fade-in-up-delayed {
-          animation: fade-in-up 1s ease-out 0.8s forwards;
-          opacity: 0;
-        }
-        
-        .animate-gradient-shift {
-          background-size: 200% 200%;
-          animation: gradient-shift 3s ease infinite;
-        }
-        
-        .animate-text-glow {
-          animation: text-glow 2s ease-in-out infinite;
-        }
-        
-        .animate-pulse-slow {
-          animation: pulse-slow 3s ease-in-out infinite;
-        }
-        
-        .animate-spin-slow {
-          animation: spin-slow 20s linear infinite;
-        }
-        
-        .animate-spin-slow-reverse {
-          animation: spin-slow-reverse 15s linear infinite;
-        }
-        
-        .bg-grid-pattern {
-          background-image: 
-            linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px);
-          background-size: 40px 40px;
-          background-size: calc(40px + (50 - 40) * ((100vw - 320px) / (1920 - 320)));
-        }
-      `}</style>
-    </div>
-  );
-};
-
-const ProfileSection = () => {
-  return (
-    <div className="relative animate-profile-entrance">
-      {/* Background shape */}
-      <div className="absolute w-48 h-48 xs:w-56 xs:h-56 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 bg-gradient-to-br from-blue-900/20 to-purple-900/20 rounded-full blur-2xl animate-pulse"></div>
-      
-      {/* Decorative circles - improved position for different screen sizes */}
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-44 h-44 xs:w-48 xs:h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-80 lg:h-80">
-        {/* Rotating circles - tighter position to photo */}
-        <div className="absolute inset-0 border-2 border-transparent border-t-blue-500/50 border-r-purple-500/50 rounded-full animate-spin-slow"></div>
-        <div className="absolute inset-0 border-2 border-transparent border-b-purple-500/50 border-l-blue-500/50 rounded-full animate-spin-slow-reverse"></div>
-      </div>
-      
-      {/* Profile Image Container - Fixed centering and improved styling */}
-      <div className="relative z-10 flex justify-center items-center">
-        <div className="w-40 h-40 xs:w-44 xs:h-44 sm:w-52 sm:h-52 md:w-60 md:h-60 lg:w-72 lg:h-72 rounded-full overflow-hidden bg-gradient-to-br from-blue-500/20 to-purple-600/20 p-1 shadow-2xl shadow-blue-500/30 hover:shadow-blue-500/50 transition-all duration-500">
-          <div className="relative w-full h-full rounded-full overflow-hidden">
-            <img 
-              src="/images/steven.jpg" 
-              alt="Steven Jonathan Sihombing Profile" 
-              className="w-full h-full object-cover rounded-full transform hover:scale-105 transition duration-500" 
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/30 rounded-full"></div>
-          </div>
-        </div>
-      </div>
-      
-      {/* Social Media Icons - adjusted for responsiveness */}
-      <div className="absolute inset-0 w-full h-full flex items-center justify-center">
-        <SocialMediaRing />
-      </div>
-    </div>
-  );
-};
-
-const SocialMediaRing = () => {
-  // Updated social icons - removed Twitter, added proper links
-  const socialIcons = [
-    { 
-      icon: <FaGithub size={18} />, 
-      gradient: "from-gray-700 to-gray-900", 
-      tooltip: "GitHub", 
-      angle: 60,
-      url: "https://github.com/StevenJ0"
-    },
-    { 
-      icon: <FaLinkedin size={18} />, 
-      gradient: "from-blue-600 to-blue-800", 
-      tooltip: "LinkedIn", 
-      angle: 180,
-      url: "https://www.linkedin.com/in/steven-sihombing"
-    },
-    { 
-      icon: <FaInstagram size={18} />, 
-      gradient: "from-pink-500 to-purple-500", 
-      tooltip: "Instagram", 
-      angle: 300,
-      url: "https://www.instagram.com/steven_shmbng/"
-    }
-  ];
-
-  // Responsive radius based on screen size using window innerWidth
-  const [radius, setRadius] = useState(130);
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 480) {
-        setRadius(90); // Smaller radius for mobile
-      } else if (window.innerWidth < 640) {
-        setRadius(100); // Medium radius for small tablets
-      } else if (window.innerWidth < 768) {
-        setRadius(110); // Medium radius for tablets
-      } else if (window.innerWidth < 1024) {
-        setRadius(130); // Medium radius for small desktops
-      } else {
-        setRadius(150); // Original radius for desktop
-      }
-    };
-
-    handleResize(); // Set initial size
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  return (
-    <>
-      {socialIcons.map((social, index) => {
-        const angleInRadians = (social.angle * Math.PI) / 180;
-        const x = radius * Math.cos(angleInRadians);
-        const y = radius * Math.sin(angleInRadians);
-        
-        return (
-          <div 
-            key={index}
-            className="absolute transform -translate-x-1/2 -translate-y-1/2 animate-fade-in-up"
-            style={{
-              left: `calc(50% + ${x}px)`,
-              top: `calc(50% + ${y}px)`,
-              zIndex: 20,
-              animationDelay: `${1.5 + index * 0.2}s`
-            }}
-          >
-            <SocialButton 
-              icon={social.icon} 
-              gradient={social.gradient} 
-              tooltip={social.tooltip}
-              url={social.url}
-            />
-          </div>
-        );
-      })}
-    </>
-  );
-};
-
-const SocialButton = ({ icon, gradient, tooltip, url } : any) => {
-  return (
-    <div className="relative group">
-      <a 
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={`flex items-center justify-center w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full shadow-lg hover:shadow-xl transform transition-all hover:scale-110 hover:-translate-y-1 bg-gradient-to-br ${gradient} animate-bounce-subtle`}
-        aria-label={tooltip}
-      >
-        <div className="text-white transition-transform group-hover:scale-110">{icon}</div>
-      </a>
-      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-800 text-white text-[10px] xs:text-xs px-2 py-1 rounded whitespace-nowrap z-10 animate-fade-in">
-        {tooltip}
-        <div className="absolute top-full left-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-gray-800 transform -translate-x-1/2"></div>
-      </div>
-    </div>
-  );
-};
-
-const Skill = ({ icon, text, delay } : any) => {
-  return (
-    <div 
-      className="flex items-center gap-1 xs:gap-1.5 sm:gap-2 bg-gray-800/50 backdrop-blur-sm px-2 xs:px-3 sm:px-4 py-1 xs:py-1.5 sm:py-2 rounded-full hover:bg-gray-700/50 transition-all border border-gray-700/50 hover:border-blue-500/50 hover:shadow-lg hover:shadow-blue-500/20 transform hover:-translate-y-1 animate-fade-in-up opacity-0"
-      style={{ animationDelay: delay, animationFillMode: 'forwards' }}
-    >
-      <div className="text-blue-400 transition-colors group-hover:text-blue-300">{icon}</div>
-      <span className="text-[10px] xs:text-xs sm:text-sm font-medium">{text}</span>
-      
-      <style jsx>{`
-        @keyframes bounce-subtle {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-2px); }
-        }
-        
-        .animate-bounce-subtle {
-          animation: bounce-subtle 2s ease-in-out infinite;
-        }
-        
-        .animate-fade-in {
-          animation: fade-in-up 0.3s ease-out forwards;
-        }
-        
-        .animate-profile-entrance {
-          animation: slide-in-right 1.2s ease-out forwards;
-        }
-      `}</style>
     </div>
   );
 };
