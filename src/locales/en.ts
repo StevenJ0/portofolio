@@ -181,7 +181,7 @@ const en = {
         title: "Full Stack Developer Intern",
         company: "Telkom Regional 4, Semarang",
         period: "January – February 2026",
-        description: "Architected a robust FTTH monitoring dashboard from scratch and integrated Telegram bot for database-driven security[cite: 1, 3].",
+        description: "Architected a robust FTTH monitoring dashboard from scratch and integrated Telegram bot for database-driven security.",
         current: false,
       },
       {
@@ -189,7 +189,7 @@ const en = {
         title: "Software Engineer",
         company: "WalletX (Personal Project)",
         period: "February 2026 – Present",
-        description: "Developing scalable RESTful APIs in Golang with Redis caching and automated transaction parsing via Telegram Webhooks[cite: 1, 3].",
+        description: "Developing scalable RESTful APIs in Golang with Redis caching and automated transaction parsing via Telegram Webhooks.",
         current: true,
       },
       {
@@ -197,7 +197,7 @@ const en = {
         title: "Digital Content & Journalism Intern",
         company: "Telkom Regional 4, Semarang",
         period: "June – August 2025",
-        description: "Covered corporate activities and authored high-quality internal news articles through cross-divisional collaboration[cite: 1, 2].",
+        description: "Covered corporate activities and authored high-quality internal news articles through cross-divisional collaboration.",
         current: false,
       },
       {
@@ -205,7 +205,7 @@ const en = {
         title: "Frontend Developer",
         company: "BoxSL",
         period: "April – August 2025",
-        description: "Developed core e-commerce features utilizing Next.js with a focus on mobile-first CSS and layout fidelity[cite: 1, 2].",
+        description: "Developed core e-commerce features utilizing Next.js with a focus on mobile-first CSS and layout fidelity.",
         current: false,
       },
       {
@@ -213,7 +213,7 @@ const en = {
         title: "Website Manager",
         company: "DCF Undip 2025",
         period: "April – May 2025",
-        description: "Managed event registration platform, optimized database schemas in Supabase, and handled real-time data flows[cite: 1, 2].",
+        description: "Managed event registration platform, optimized database schemas in Supabase, and handled real-time data flows.",
         current: false,
       },
       {

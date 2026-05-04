@@ -181,7 +181,7 @@ const id = {
         title: "Full Stack Developer Intern",
         company: "Telkom Regional 4, Semarang",
         period: "Januari – Februari 2026",
-        description: "Membangun dashboard monitoring FTTH secara mandiri, mengintegrasikan bot Telegram untuk keamanan data, dan mengoptimalkan UX operasional[cite: 1, 3].",
+        description: "Membangun dashboard monitoring FTTH secara mandiri, mengintegrasikan bot Telegram untuk keamanan data, dan mengoptimalkan UX operasional.",
         current: false,
       },
       {
@@ -189,7 +189,7 @@ const id = {
         title: "Software Engineer",
         company: "WalletX (Personal Project)",
         period: "Februari 2026 – Sekarang",
-        description: "Mengembangkan RESTful API dengan Golang, caching menggunakan Redis, dan parsing transaksi otomatis berbasis Telegram Webhook[cite: 1, 3].",
+        description: "Mengembangkan RESTful API dengan Golang, caching menggunakan Redis, dan parsing transaksi otomatis berbasis Telegram Webhook.",
         current: true,
       },
       {
@@ -197,7 +197,7 @@ const id = {
         title: "Magang Jurnalistik & Konten Digital",
         company: "Telkom Regional 4, Semarang",
         period: "Juni – Agustus 2025",
-        description: "Meliput kegiatan korporat, menulis berita internal, dan berkolaborasi lintas divisi untuk strategi komunikasi digital[cite: 1, 2].",
+        description: "Meliput kegiatan korporat, menulis berita internal, dan berkolaborasi lintas divisi untuk strategi komunikasi digital.",
         current: false,
       },
       {
@@ -205,7 +205,7 @@ const id = {
         title: "Frontend Developer",
         company: "BoxSL",
         period: "April – Agustus 2025",
-        description: "Mengembangkan fitur e-commerce menggunakan Next.js dengan fokus pada mobile-first design dan integrasi API yang lancar[cite: 1, 2].",
+        description: "Mengembangkan fitur e-commerce menggunakan Next.js dengan fokus pada mobile-first design dan integrasi API yang lancar.",
         current: false,
       },
       {
@@ -213,7 +213,7 @@ const id = {
         title: "Website Manager",
         company: "DCF Undip 2025",
         period: "April – Mei 2025",
-        description: "Mengelola platform registrasi berbasis Next.js dan Supabase, serta mengoptimalkan skema database untuk trafik tinggi[cite: 1, 2].",
+        description: "Mengelola platform registrasi berbasis Next.js dan Supabase, serta mengoptimalkan skema database untuk trafik tinggi.",
         current: false,
       },
       {
