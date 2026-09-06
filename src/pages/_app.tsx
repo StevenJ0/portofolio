@@ -15,14 +15,14 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="title" content="Steven Jonathan Sihombing — Portfolio" />
         <meta
           name="description"
-          content="Portfolio of a Full Stack Developer & Informatics Student."
+          content="Portfolio of a Software Engineer specializing in Backend Development & AI Engineering."
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://steven-jonathan.vercel.app" />
         <meta property="og:title" content="Steven Jonathan Sihombing — Portfolio" />
         <meta
           property="og:description"
-          content="Portfolio of a Full Stack Developer & Informatics Student."
+          content="Portfolio of a Software Engineer specializing in Backend Development & AI Engineering."
         />
         <meta property="og:image" content="https://steven-jonathan.vercel.app/images/Porto.png" />
         <meta property="twitter:card" content="summary_large_image" />
@@ -30,7 +30,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta property="twitter:title" content="Steven Jonathan Sihombing — Portfolio" />
         <meta
           property="twitter:description"
-          content="Portfolio of a Full Stack Developer & Informatics Student."
+          content="Portfolio of a Software Engineer specializing in Backend Development & AI Engineering."
         />
         <meta property="twitter:image" content="https://steven-jonathan.vercel.app/images/Porto.png" />
       </Head>
