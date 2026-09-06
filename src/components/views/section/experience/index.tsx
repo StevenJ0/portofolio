@@ -63,7 +63,19 @@ const ExperienceSection = () => {
                       <span className="text-[#555] text-xs">{exp.period}</span>
                     </div>
                   </div>
-                  <p className="text-[#777] text-sm leading-relaxed">{exp.description}</p>
+                  {/* Description: array → bullet list, string → plain paragraph */}
+                  {Array.isArray(exp.description) ? (
+                    <ul className="mt-1 space-y-2">
+                      {(exp.description as string[]).map((point, i) => (
+                        <li key={i} className="flex items-start gap-2 text-[#777] text-sm leading-relaxed">
+                          <span className="mt-1.5 w-1.5 h-1.5 flex-shrink-0 rounded-full bg-gold/60" />
+                          <span>{point}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-[#777] text-sm leading-relaxed">{exp.description as string}</p>
+                  )}
 
                   {exp.current && (
                     <div className="mt-2 inline-flex items-center gap-1.5">

@@ -1,15 +1,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaChevronRight, FaTimes, FaCalendarAlt, FaMapMarkerAlt, FaExternalLinkAlt } from 'react-icons/fa';
+import { FaChevronRight, FaTimes, FaCalendarAlt, FaMapMarkerAlt, FaExternalLinkAlt, FaGithub } from 'react-icons/fa';
 import { useLocale } from '@/context/LocaleContext';
 
 /* ─── Types ─────────────────────────────────────────────────── */
-interface ProjectDetail {
-  challenge: string;
-  solution: string;
-  skillGained: string;
-}
-
 interface ItProject {
   id: number;
   title: string;
@@ -35,15 +29,42 @@ interface NonItProject {
 const IT_PROJECTS: ItProject[] = [
   {
     id: 0,
+    title: 'InvestSense',
+    image: '/images/investsense.png',
+    tags: ['Node.js', 'Express', 'Python', 'FastAPI', 'PostgreSQL', 'Supabase', 'Redis', 'Yahoo Finance API', 'GNews API', 'Vercel', 'Hugging Face'],
+    link: 'https://investsense-ai.netlify.app/',
+    featured: true,
+    descKey: 'investsense',
+  },
+  {
+    id: 1,
+    title: 'WalletX',
+    image: '/images/walletx.png',
+    tags: ['Golang', 'Flutter', 'PostgreSQL', 'Supabase', 'Redis', 'Telegram Bot API', 'SMTP', 'Vercel'],
+    link: 'https://github.com/asyersamuel/walletx-be.git',
+    featured: false,
+    descKey: 'walletx',
+  },
+  {
+    id: 2,
+    title: 'Diponegoro Chemistry Fair (DCF) 2026',
+    image: '/images/dcf2026.png',
+    tags: ['Next.js', 'Supabase', 'PostgreSQL', 'Docker', 'Nginx', 'Moodle', 'k6'],
+    link: 'https://dcfundip2026.vercel.app',
+    featured: true,
+    descKey: 'dcf2026',
+  },
+  {
+    id: 3,
     title: 'Capex Dashboard (FTTH)',
     image: '/images/web-dashboard-ftth.png',
     tags: ['React', 'Next.js', 'Tailwind CSS', 'PostgreSQL', 'Prisma', 'JWT', 'Telegram Bot'],
     link: 'https://dashboard-ftth.vercel.app/',
-    featured: true,
+    featured: false,
     descKey: 'capex',
   },
   {
-    id: 1,
+    id: 4,
     title: 'Portfolio Website',
     image: '/images/Porto.png',
     tags: ['Next.js', 'Tailwind CSS', 'Framer Motion', 'i18n'],
@@ -52,7 +73,7 @@ const IT_PROJECTS: ItProject[] = [
     descKey: 'portfolio',
   },
   {
-    id: 2,
+    id: 5,
     title: 'BoxSL Website',
     image: '/images/boxsl.png',
     tags: ['React', 'Next.js', 'Tailwind CSS'],
@@ -61,7 +82,7 @@ const IT_PROJECTS: ItProject[] = [
     descKey: 'boxsl',
   },
   {
-    id: 3,
+    id: 6,
     title: 'DCF Undip 2025',
     image: '/images/dcfundip.png',
     tags: ['React', 'Next.js', 'Tailwind CSS', 'Supabase'],
@@ -92,72 +113,23 @@ const NON_IT_PROJECTS: NonItProject[] = [
     descKey: 'informatics_care',
     gallery: ['/images/icare/ICARE-1.JPG', '/images/icare/ICARE-2.JPG', '/images/icare/ICARE-3.JPG'],
   },
-  {
-    id: 3,
-    title: 'Digital Journalism Intern — Telkom',
-    organization: 'Telkom Regional 4, Semarang',
-    image: '/images/telkom1.jpeg',
-    period: 'July–August 2025',
-    location: 'Semarang',
-    descKey: 'telkom_journalism',
-    gallery: ['/images/telkom1.jpeg', '/images/telkom2.jpeg'],
-  },
-  {
-    id: 4,
-    title: 'Web Developer Intern (FTTH Dashboard)',
-    organization: 'Telkom Regional 4, Semarang',
-    image: '/images/magang-ftth/pic1.jpeg',
-    period: 'Sep–Dec 2024',
-    location: 'Semarang',
-    descKey: 'telkom_webdev',
-    gallery: ['/images/magang-ftth/pic1.jpeg', '/images/magang-ftth/pic2.jpeg', '/images/magang-ftth/pic3.jpeg'],
-  }
 ];
 
 /* ─── Helper: get translated project content from t ─────────── */
 function getProjectContent(t: any) {
   return t.projects as {
-    capex: { description: string; details: ProjectDetail[] };
-    portfolio: { description: string; details: ProjectDetail[] };
-    boxsl: { description: string; details: ProjectDetail[] };
-    dcf: { description: string; details: ProjectDetail[] };
+    investsense: { description: string };
+    walletx: { description: string };
+    dcf2026: { description: string };
+    capex: { description: string };
+    portfolio: { description: string };
+    boxsl: { description: string };
+    dcf: { description: string };
     informatics_orphanage: { description: string; achievements: string[] };
-    informatics_care: { description: string; achievements: string[]; details: ProjectDetail[] };
-    telkom_journalism: { description: string; achievements: string[] };
-    telkom_content: { description: string; achievements: string[] };
+    informatics_care: { description: string; achievements: string[] };
     [key: string]: any;
   };
 }
-
-/* ─── Project Details List ──────────────────────────────────── */
-const ProjectDetailsList = ({ details, t }: { details: ProjectDetail[]; t: any }) => (
-  <ol className="space-y-4 list-none">
-    {details.map((item, i) => (
-      <li key={i} className="rounded-xl bg-[#161616] border border-[#2a2a2a] overflow-hidden">
-        <div className="px-4 py-2 bg-[#1c1c1c] border-b border-[#2a2a2a] flex items-center gap-2">
-          <span className="w-5 h-5 rounded-full bg-gold/20 text-gold text-[10px] font-black flex items-center justify-center shrink-0">
-            {i + 1}
-          </span>
-          <span className="text-[#555] text-xs font-semibold uppercase tracking-wider">Item {i + 1}</span>
-        </div>
-        <div className="p-4 space-y-3">
-          <div className="flex gap-3">
-            <span className="text-gold font-black text-xs pt-[2px] shrink-0 w-[90px]">{t.projects.challengeLabel}</span>
-            <p className="text-[#aaa] text-sm leading-relaxed">{item.challenge}</p>
-          </div>
-          <div className="flex gap-3">
-            <span className="text-[#4ade80] font-black text-xs pt-[2px] shrink-0 w-[90px]">{t.projects.solutionLabel}</span>
-            <p className="text-[#aaa] text-sm leading-relaxed">{item.solution}</p>
-          </div>
-          <div className="flex gap-3">
-            <span className="text-[#60a5fa] font-black text-xs pt-[2px] shrink-0 w-[90px]">{t.projects.skillLabel}</span>
-            <p className="text-[#aaa] text-sm leading-relaxed">{item.skillGained}</p>
-          </div>
-        </div>
-      </li>
-    ))}
-  </ol>
-);
 
 /* ─── IT Project Card ───────────────────────────────────────── */
 const ProjectCard = ({
@@ -166,12 +138,11 @@ const ProjectCard = ({
   openModal,
 }: {
   project: ItProject;
-  content: { description: string; details?: ProjectDetail[] };
+  content: { description: string };
   openModal: (p: ItProject, c: typeof content) => void;
 }) => {
   const [hovered, setHovered] = useState(false);
   const { t } = useLocale();
-  const firstDetail = content.details?.[0];
 
   return (
     <motion.div
@@ -193,25 +164,6 @@ const ProjectCard = ({
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#1c1c1c] via-[#1c1c1c]/30 to-transparent" />
 
-        <AnimatePresence>
-          {hovered && firstDetail && (
-            <motion.div
-              className="absolute inset-0 bg-[#111]/95 flex flex-col justify-center p-5"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              <p className="text-gold text-xs font-bold uppercase tracking-wider mb-2">
-                {t.projects.challengeLabel}
-              </p>
-              <p className="text-[#ccc] text-sm leading-relaxed line-clamp-5">
-                {firstDetail.challenge}
-              </p>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
         {project.featured && (
           <div className="absolute top-3 left-3 bg-gold text-[#111] text-xs font-bold px-2.5 py-1 rounded">
             Featured
@@ -224,11 +176,16 @@ const ProjectCard = ({
         <p className="text-[#777] text-sm leading-relaxed mb-4 line-clamp-2">{content.description}</p>
 
         <div className="flex flex-wrap gap-1.5 mb-4">
-          {project.tags.map((tag) => (
+          {project.tags.slice(0, 5).map((tag) => (
             <span key={tag} className="text-[10px] font-semibold px-2 py-0.5 rounded bg-[#2a2a2a] text-[#aaa] border border-[#333]">
               {tag}
             </span>
           ))}
+          {project.tags.length > 5 && (
+            <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-[#2a2a2a] text-[#666] border border-[#333]">
+              +{project.tags.length - 5}
+            </span>
+          )}
         </div>
 
         <div className="flex items-center gap-3">
@@ -247,7 +204,7 @@ const ProjectCard = ({
               className="text-[#555] hover:text-white text-sm transition-colors"
               onClick={e => e.stopPropagation()}
             >
-              <FaExternalLinkAlt className="text-xs" />
+              {project.link.includes('github') ? <FaGithub className="text-xs" /> : <FaExternalLinkAlt className="text-xs" />}
             </a>
           )}
         </div>
@@ -263,7 +220,7 @@ const NonItCard = ({
   openModal,
 }: {
   project: NonItProject;
-  content: { description: string; achievements: string[]; details?: ProjectDetail[] };
+  content: { description: string; achievements: string[] };
   openModal: (p: NonItProject, c: typeof content) => void;
 }) => {
   const { t } = useLocale();
@@ -308,71 +265,76 @@ const DetailModal = ({
   const { t } = useLocale();
   return (
     <motion.div
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
       onClick={onClose}
     >
       <motion.div
-        className="bg-[#1c1c1c] border border-[#2a2a2a] rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
-        initial={{ scale: 0.9, y: 20 }}
-        animate={{ scale: 1, y: 0 }}
-        exit={{ scale: 0.9, y: 20 }}
-        transition={{ duration: 0.25 }}
+        className="bg-[#161616] border border-[#2a2a2a] rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl shadow-black/50"
+        initial={{ scale: 0.92, y: 30, opacity: 0 }}
+        animate={{ scale: 1, y: 0, opacity: 1 }}
+        exit={{ scale: 0.92, y: 30, opacity: 0 }}
+        transition={{ type: 'spring', damping: 25, stiffness: 300 }}
         onClick={e => e.stopPropagation()}
       >
         {/* Hero image */}
-        <div className="relative h-56">
+        <div className="relative h-64 overflow-hidden rounded-t-2xl">
           <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#1c1c1c] to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#161616] via-[#161616]/50 to-transparent" />
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 bg-[#1c1c1c]/80 text-white p-2 rounded-full hover:bg-red-500/30 transition-colors"
+            className="absolute top-4 right-4 bg-black/40 backdrop-blur-md text-white/80 p-2.5 rounded-full hover:bg-red-500/40 hover:text-white transition-all duration-200 border border-white/10"
           >
-            <FaTimes />
+            <FaTimes className="text-sm" />
           </button>
-          <div className="absolute bottom-4 left-6">
-            <h2 className="text-white font-bold text-2xl">{project.title}</h2>
-            {!isIt && <p className="text-gold text-sm mt-1">{project.organization}</p>}
+          <div className="absolute bottom-5 left-7 right-7">
+            <h2 className="text-white font-extrabold text-2xl sm:text-3xl leading-tight drop-shadow-lg">{project.title}</h2>
+            {!isIt && <p className="text-gold text-sm mt-1.5 font-semibold">{project.organization}</p>}
           </div>
         </div>
 
-        <div className="p-6 space-y-5">
+        <div className="p-7 space-y-6">
           {!isIt && project.period && (
-            <div className="flex flex-wrap gap-4 text-[#777] text-sm">
-              <span className="flex items-center gap-2"><FaCalendarAlt className="text-gold" />{project.period}</span>
-              <span className="flex items-center gap-2"><FaMapMarkerAlt className="text-gold" />{project.location}</span>
+            <div className="flex flex-wrap gap-5 text-[#888] text-sm">
+              <span className="flex items-center gap-2"><FaCalendarAlt className="text-gold text-xs" />{project.period}</span>
+              <span className="flex items-center gap-2"><FaMapMarkerAlt className="text-gold text-xs" />{project.location}</span>
             </div>
           )}
 
           {isIt && project.tags && (
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap gap-2">
               {project.tags.map((tag: string) => (
-                <span key={tag} className="text-xs px-2.5 py-1 rounded bg-[#2a2a2a] text-[#aaa] border border-[#333]">{tag}</span>
+                <span
+                  key={tag}
+                  className="text-xs font-medium px-3 py-1.5 rounded-full bg-gradient-to-r from-[#2a2a2a] to-[#222] text-[#ccc] border border-[#3a3a3a] shadow-sm"
+                >
+                  {tag}
+                </span>
               ))}
             </div>
           )}
 
           <div>
-            <h4 className="text-white font-bold mb-2">{t.projects.descriptionLabel}</h4>
-            <p className="text-[#aaa] text-sm leading-relaxed">{content.description}</p>
-          </div>
-
-          {content.details && content.details.length > 0 && (
-            <div>
-              <h4 className="text-white font-bold mb-3">{t.projects.narrativeLabel}</h4>
-              <ProjectDetailsList details={content.details} t={t} />
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-1 h-5 rounded-full bg-gold" />
+              <h4 className="text-white font-bold text-sm uppercase tracking-wider">{t.projects.descriptionLabel}</h4>
             </div>
-          )}
+            <p className="text-[#bbb] text-sm leading-[1.8]">{content.description}</p>
+          </div>
 
           {content.achievements && (
             <div>
-              <h4 className="text-white font-bold mb-2">{t.projects.achievementsLabel}</h4>
-              <ul className="space-y-1.5">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-1 h-5 rounded-full bg-gold" />
+                <h4 className="text-white font-bold text-sm uppercase tracking-wider">{t.projects.achievementsLabel}</h4>
+              </div>
+              <ul className="space-y-2">
                 {content.achievements.map((a: string, i: number) => (
-                  <li key={i} className="flex items-start gap-2 text-[#aaa] text-sm">
-                    <span className="text-gold mt-1 text-xs">▸</span>{a}
+                  <li key={i} className="flex items-start gap-3 text-[#bbb] text-sm">
+                    <span className="text-gold mt-0.5 text-xs shrink-0">▸</span>{a}
                   </li>
                 ))}
               </ul>
@@ -381,10 +343,13 @@ const DetailModal = ({
 
           {project.gallery && project.gallery.length > 0 && (
             <div>
-              <h4 className="text-white font-bold mb-3">{t.projects.galleryLabel}</h4>
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-1 h-5 rounded-full bg-gold" />
+                <h4 className="text-white font-bold text-sm uppercase tracking-wider">{t.projects.galleryLabel}</h4>
+              </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {project.gallery.map((img: string, i: number) => (
-                  <div key={i} className="aspect-video rounded-lg overflow-hidden border border-[#333]">
+                  <div key={i} className="aspect-video rounded-lg overflow-hidden border border-[#333] hover:border-gold/40 transition-colors">
                     <img src={img} alt={`Gallery ${i + 1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" />
                   </div>
                 ))}
@@ -393,14 +358,24 @@ const DetailModal = ({
           )}
 
           {isIt && project.link && project.link !== '/' && (
-            <a
-              href={project.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 btn-gold text-sm"
-            >
-              {t.projects.viewProject} <FaExternalLinkAlt className="text-xs" />
-            </a>
+            <div className="pt-2">
+              <a
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl bg-gradient-to-r from-gold to-[#c9922e] text-[#111] text-sm font-bold shadow-lg shadow-gold/20 hover:shadow-gold/40 hover:scale-[1.02] transition-all duration-200"
+              >
+                {project.link.includes('github') ? (
+                  <>
+                    <FaGithub className="text-base" /> {t.projects.viewProject}
+                  </>
+                ) : (
+                  <>
+                    {t.projects.viewProject} <FaExternalLinkAlt className="text-xs" />
+                  </>
+                )}
+              </a>
+            </div>
           )}
         </div>
       </motion.div>
@@ -523,6 +498,7 @@ const ProjectsExperiencesSection = () => {
       <AnimatePresence>
         {modalState && (
           <DetailModal
+            key="project-modal"
             project={modalState.project}
             content={modalState.content}
             onClose={closeModal}

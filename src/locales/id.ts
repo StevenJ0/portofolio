@@ -41,93 +41,29 @@ const id = {
     viewDetails: "Lihat Detail",
     viewMore: "Lihat Semua Proyek",
     descriptionLabel: "Deskripsi",
-    challengeLabel: "Kendala",
-    solutionLabel: "Solusi",
-    learningLabel: "Pelajaran",
-    skillLabel: "Skill yang Didapat",
-    narrativeLabel: "Tantangan & Solusi",
     achievementsLabel: "Pencapaian Utama",
     galleryLabel: "Galeri",
     /* ── Konten Proyek IT ─────────────────────── */
+    investsense: {
+      description: "Merancang RESTful API skalabel di Node.js menggunakan Clean Architecture, mengintegrasikan Redis cache multi-tier dengan namespaced keys untuk kutipan saham, indikator RSI, dan konteks chatbot RAG, dengan fail-open error handling yang menjamin degradasi yang anggun saat cache mati. Membangun pipeline data harian otomatis yang mengorkestrasikan ingestion OHLCV Yahoo Finance, perhitungan RSI-14 melalui microservice Python, dan analisis sentimen berita berbasis AI untuk saham IDX yang di-watchlist, dengan idempotensi upsert Supabase untuk menghilangkan duplikasi data.",
+    },
+    walletx: {
+      description: "Merancang RESTful API skalabel di Golang menggunakan Clean Architecture di Vercel, mengintegrasikan Redis cache serbaguna dengan namespaced keys dan pola fallback NoOp untuk degradasi yang anggun. Membangun pipeline ingestion transaksi yang fault-tolerant melalui IMAP dan Telegram, mengkombinasikan Regex spesifik bank dengan fallback Gemini AI dan menerapkan idempotensi level database untuk mencegah duplikasi data.",
+    },
+    dcf2026: {
+      description: "Mengembangkan portal pendaftaran peserta berperforma tinggi menggunakan Next.js dan Supabase, mengintegrasikan Framer Motion untuk micro-interaction UI premium dan Nodemailer untuk alur kerja email otomatis. Merancang infrastruktur Computer-Based Test (CBT) yang skalabel dengan mengkontainerisasi Moodle, Nginx, dan PostgreSQL melalui Docker, serta memvalidasi ketahanan sistem menggunakan k6 automated load testing untuk menjamin zero downtime bagi 250 pengguna bersamaan pada periode ujian puncak.",
+    },
     capex: {
       description: "Platform monitoring full-stack yang digunakan di Telkom Semarang untuk manajemen proyek jaringan Fiber-to-the-Home (FTTH), dilengkapi dashboard real-time, visualisasi grafik interaktif, dan integrasi bot Telegram untuk divisi lapangan.",
-      details: [
-        {
-          challenge: "Ini adalah website pertama saya yang berhubungan langsung dengan klien. Terkadang muncul error atau komplain yang ternyata bukan dari kode, melainkan faktor eksternal seperti koneksi internet klien yang lambat.",
-          solution: "Menambahkan loading state yang jelas, error handling yang informatif pada UI, dan mengedukasi klien mengenai cara penggunaan sistem dengan benar.",
-          skillGained: "Belajar cara berkomunikasi efektif dengan klien non-teknis dan menyadari pentingnya Defensive UX Design — merancang antarmuka yang siap menghadapi kondisi jaringan buruk."
-        },
-        {
-          challenge: "Memastikan keamanan bot Telegram. Karena ini untuk internal Telkom, kami tidak ingin sembarang orang bisa mengakses dan menggunakan bot tersebut.",
-          solution: "Membangun sistem validasi ke database di awal interaksi. Bot akan mengecek apakah nomor telepon pengguna (sender) sudah terdaftar di database sebelum mengizinkan percakapan dan akses data.",
-          skillGained: "Memahami cara mengamankan integrasi API pihak ketiga (Telegram) dan menerapkan autentikasi pengguna berbasis nomor telepon di sisi backend."
-        },
-        {
-          challenge: "Menyajikan visualisasi data (grafik) yang benar-benar sesuai dengan keinginan mentor agar data monitoring yang ditampilkan relevan, tepat sasaran, dan mudah diakses.",
-          solution: "Berkomunikasi secara intensif dengan mentor untuk memahami metrik apa saja yang paling dibutuhkan, lalu menerjemahkannya menjadi grafik interaktif di dashboard.",
-          skillGained: "Belajar cara menggali dan menerjemahkan kebutuhan bisnis (business requirements) dari stakeholder menjadi fitur UI/UX yang fungsional."
-        }
-      ]
     },
     portfolio: {
       description: "Portofolio pribadi yang dibangun dengan Next.js dan Tailwind CSS, menampilkan proyek, keterampilan, dan pengalaman dengan animasi halus serta dukungan i18n penuh.",
-      details: [
-        {
-          challenge: "Merancang situs yang terasa premium tanpa desainer UI di tim — perlu beriterasi melalui beberapa sistem desain.",
-          solution: "Mengumpulkan inspirasi dari produk SaaS premium dan memilih palet charcoal + gold dengan micro-interaction glassmorphism.",
-          skillGained: "Pemikiran sistem desain — keputusan desain yang disengaja dan berbasis riset menghasilkan identitas visual yang lebih kuat daripada pilihan ad-hoc.",
-        },
-        {
-          challenge: "Mengimplementasikan i18n penuh tanpa library berat, memastikan pergantian bahasa instan di semua data dinamis (bukan hanya label statis).",
-          solution: "Membangun sistem locale React Context kustom yang didukung file kamus locale, lalu memindahkan semua string data dinamis ke dalam kamus agar seluruh halaman berganti sekaligus.",
-          skillGained: "Memperdalam pemahaman tentang pola React Context untuk state global dan arsitektur yang diperlukan untuk i18n yang dapat diskalakan dalam aplikasi berbasis data.",
-        },
-      ],
     },
     boxsl: {
       description: "Platform e-commerce yang dirancang untuk memamerkan produk pernikahan dengan format interaktif yang menarik bagi calon pelanggan.",
-      details: [
-        {
-          challenge: "Bekerja pada produk komersial langsung berarti setiap deployment berisiko tinggi dengan pelanggan nyata yang bergantung pada ketersediaan layanan.",
-          solution: "Menambahkan loading state yang jelas, error handling yang informatif, dan menjaga komunikasi yang erat dengan klien selama proses rilis.",
-          skillGained: "Belajar berkomunikasi efektif dengan klien non-teknis dan menyadari pentingnya Defensive UX Design."
-        },
-        {
-          challenge: "Memastikan stabilitas dan kelancaran backend, mengingat aplikasi ini langsung diakses oleh publik (production) sehingga performa yang buruk atau downtime akan sangat fatal.",
-          solution: "Melakukan pengujian API secara menyeluruh, mengelola endpoint dengan efisien, dan memastikan integrasi antara frontend dan backend berjalan tanpa hambatan sebelum rilis.",
-          skillGained: "Memahami standar kualitas aplikasi level production dan pentingnya menjaga keandalan arsitektur backend di dunia nyata."
-        },
-        {
-          challenge: "Ini adalah proyek pertama saya yang melibatkan kerja sama tim dalam pengembangan web. Menggabungkan kode dari beberapa developer sangat rentan menimbulkan konflik (merge conflict).",
-          solution: "Menerapkan alur kerja kolaborasi yang terstruktur menggunakan GitHub, seperti pembagian branch (percabangan), disiplin dalam penulisan commit, dan melakukan review sebelum menggabungkan kode.",
-          skillGained: "Sangat meningkatkan keterampilan praktis saya dalam menggunakan Git/GitHub (Version Control System) dan kemampuan bekerja sama dalam tim (Teamwork)."
-        },
-        {
-          challenge: "Memastikan rendering lintas browser yang konsisten untuk tata letak produk yang kompleks di perangkat mobile maupun desktop.",
-          solution: "Mengadopsi pendekatan CSS mobile-first dan melakukan pengujian sistematis di Chrome, Safari, dan Firefox sebelum setiap rilis.",
-          skillGained: "Memperkuat kemampuan debugging lintas browser dan kedisiplinan dalam desain responsif mobile-first."
-        }
-      ]
     },
     dcf: {
       description: "Platform web untuk Diponegoro Chemistry Fair — pusat informasi bagi peserta untuk mengakses info acara, pendaftaran, dan pembaruan.",
-      details: [
-        {
-          challenge: "Struktur database awal yang saya rancang kurang optimal. Saya menyadari bahwa jika aplikasi ini mencapai skala production yang lebih besar, struktur ini akan menyebabkan query menjadi lambat atau bahkan membuat sistem kewalahan (crash).",
-          solution: "Melakukan evaluasi mendalam terhadap skema database yang ada, mengidentifikasi bottleneck, dan mulai mempelajari cara merancang relasi data (Entity Relationship) yang lebih efisien.",
-          skillGained: "Menyadari betapa krusialnya perancangan arsitektur database (Database Design) sejak awal proyek, serta belajar menstrukturkan backend agar lebih scalable dan berkinerja tinggi."
-        },
-        {
-          challenge: "Mengelola sistem pendaftaran real-time dengan Supabase di tengah lonjakan traffic yang tidak terduga selama periode pengumuman.",
-          solution: "Mengimplementasikan pembaruan UI optimistik (Optimistic UI) dan error handling yang baik untuk memastikan halaman tetap responsif meski database sedang terbebani.",
-          skillGained: "Desain berorientasi skalabilitas — belajar mengantisipasi pola traffic dan merancang sistem yang tetap stabil di bawah tekanan (graceful degradation)."
-        },
-        {
-          challenge: "Mengkoordinasikan pengembangan website di tengah jadwal akademik perkuliahan yang padat dan komitmen organisasi lainnya.",
-          solution: "Menerapkan pembatasan fitur yang ketat dan sprint berbatas waktu (time-boxing) untuk menjaga penyelesaian proyek tetap sesuai tenggat waktu tanpa mengorbankan kualitas kode.",
-          skillGained: "Meningkatkan kemampuan manajemen proyek (Project Management) dan disiplin dalam menetapkan batasan ruang lingkup (scope) di bawah tekanan waktu."
-        }
-      ]
     },
     /* ── Konten Proyek Non-IT ─────────────────── */
     informatics_orphanage: {
@@ -137,85 +73,55 @@ const id = {
     informatics_care: {
       description: "Menjabat sebagai Project Leader untuk program pengabdian masyarakat dua hari di sebuah desa.",
       achievements: ["Mendistribusikan kebutuhan untuk 40+ keluarga", "Memimpin sesi edukasi teknologi untuk warga", "Mendorong empati komunitas melalui interaksi langsung"],
-      details: [
-        {
-          challenge: "Sering terjadi miskomunikasi dengan perangkat desa saat koordinasi kegiatan lapangan.",
-          solution: "Menyesuaikan gaya bahasa, melakukan pendekatan yang lebih personal, dan memastikan setiap informasi tersampaikan dengan sangat jelas dan tertulis.",
-          skillGained: "Meningkatkan skill komunikasi interpersonal secara signifikan dan belajar cara me-manage ekspektasi serta komunikasi dengan pemangku kepentingan (stakeholder).",
-        },
-        {
-          challenge: "Menjaga motivasi relawan agar tetap bersemangat dan berkomitmen selama program dua hari di lapangan.",
-          solution: "Menyusun jadwal dengan peran yang jelas, sesi briefing sebelum setiap kegiatan, dan momen debrief untuk menjaga keselarasan tim.",
-          skillGained: "Mengembangkan keterampilan kepemimpinan tim secara praktis dan kemampuan mempertahankan semangat tim dalam acara yang panjang dan penuh upaya.",
-        },
-      ],
     },
-    telkom_journalism: {
-      description: "Meliput dan mendokumentasikan kegiatan perusahaan...",
-      achievements: ["Mendokumentasikan acara perusahaan", "Menulis dan menyunting artikel berita", "Berkolaborasi di berbagai divisi"],
-    },
-    telkom_webdev: {
-      description: "Menjalani magang selama 3 bulan sebagai Website Developer di Telkom Regional 4 Semarang, berfokus pada pengembangan Dashboard Monitoring Proyek Fiber-to-the-Home (FTTH).",
-      achievements: [
-        "Membangun dashboard monitoring full-stack dari nol hingga siap digunakan oleh divisi lapangan.",
-        "Meningkatkan kemampuan kolaborasi lintas divisi (cross-functional team) antara developer dan pemangku kepentingan (mentor/klien internal).",
-        "Mengimplementasikan integrasi bot Telegram yang aman untuk pelaporan data real-time."
-      ],
-      details: [
-        {
-          challenge: "Beradaptasi dengan standar kerja profesional di perusahaan korporat besar dan menerjemahkan kebutuhan bisnis yang kompleks ke dalam kode.",
-          solution: "Melakukan komunikasi proaktif dengan mentor, rutin meminta feedback (code review), dan memecah fitur besar menjadi tugas-tugas kecil yang terukur (Agile mindset).",
-          skillGained: "Memahami alur kerja profesional (SDLC), manajemen ekspektasi tim, dan secara drastis meningkatkan kemampuan penulisan kode yang bersih dan terstruktur (Clean Code)."
-        }
-      ]
-    },
+    // ── DIHAPUS: telkom_journalism (magang non-teknis, dihapus)
+    // ── DIHAPUS: telkom_webdev (magang non-teknis, dihapus)
   },
+
   experience: {
     title: "Pengalaman",
     titleHighlight: "Saya",
     getInTouch: "Hubungi Saya",
     present: "Sekarang",
     items: [
+      // ── DIPERTAHANKAN: Telkom Regional 4 (Full Stack Developer Intern) ──
       {
         year: "2026",
         title: "Full Stack Developer Intern",
-        company: "Telkom Regional 4, Semarang",
-        period: "Januari – Februari 2026",
-        description: "Membangun dashboard monitoring FTTH secara mandiri, mengintegrasikan bot Telegram untuk keamanan data, dan mengoptimalkan UX operasional.",
+        company: "Telkom Regional 4 · Semarang, Indonesia",
+        period: "Januari 2026 – Februari 2026",
+        description: [
+          "Merancang dan men-deploy dashboard monitoring FTTH siap produksi dari nol, memperlancar pemantauan proyek untuk divisi lapangan. Menerapkan Defensive UX Design dan penanganan error yang andal untuk memitigasi jaringan klien yang lambat, yang secara signifikan mengurangi keluhan pengguna dan menyederhanakan pekerjaan bagi pekerja non-teknis.",
+          "Mengamankan akses data korporat internal dengan membangun integrasi bot Telegram yang dilengkapi sistem autentikasi nomor telepon berbasis database yang ketat, berhasil memastikan 100% penggunaan yang terotorisasi.",
+        ],
         current: false,
       },
+      // ── DIPERTAHANKAN: DBS Foundation Coding Camp (Full-Stack Web Developer) ──
       {
         year: "2026",
-        title: "Software Engineer",
-        company: "WalletX (Personal Project)",
-        period: "Februari 2026 – Sekarang",
-        description: "Mengembangkan RESTful API dengan Golang, caching menggunakan Redis, dan parsing transaksi otomatis berbasis Telegram Webhook.",
-        current: true,
-      },
-      {
-        year: "2025",
-        title: "Magang Jurnalistik & Konten Digital",
-        company: "Telkom Regional 4, Semarang",
-        period: "Juni – Agustus 2025",
-        description: "Meliput kegiatan korporat, menulis berita internal, dan berkolaborasi lintas divisi untuk strategi komunikasi digital.",
+        title: "Full-Stack Web Developer",
+        company: "DBS Foundation Coding Camp · Remote",
+        period: "Februari 2026 – Juli 2026",
+        description: [
+          "Terpilih sebagai 1 dari hanya 3.000 peserta kompetitif dari 67.000+ pelamar nasional (tingkat penerimaan ~4,4%) untuk menjalani program pengembangan talenta digital yang intensif dan berstandar tinggi.",
+          "Menginvestasikan 943+ jam untuk menguasai rekayasa perangkat lunak secara komprehensif, mencakup frontend modern (React, Vite, Zustand), backend skalabel (Node.js, Express, RESTful APIs), manajemen database (PostgreSQL/Supabase), Redis caching, dan AWS cloud.",
+          "Turut mengembangkan \"InvestSense AI\" (platform asisten investasi berbasis AI) dengan merancang API modular, mengorkestrasikan integrasi layanan mikro dengan Python (FastAPI), dan menerapkan strategi Redis caching yang adaptif.",
+        ],
         current: false,
       },
+      // ── BARU: Diponegoro Chemistry Fair 2026 (Project Manager / Lead Dev) ──
       {
-        year: "2025",
-        title: "Frontend Developer",
-        company: "BoxSL",
-        period: "April – Agustus 2025",
-        description: "Mengembangkan fitur e-commerce menggunakan Next.js dengan fokus pada mobile-first design dan integrasi API yang lancar.",
+        year: "2026",
+        title: "Project Manager / Lead Developer",
+        company: "Diponegoro Chemistry Fair (DCF) 2026 · Semarang, Indonesia",
+        period: "Maret 2026 – September 2026",
+        description: [
+          "Mengembangkan portal pendaftaran peserta berperforma tinggi menggunakan Next.js dan Supabase, mengintegrasikan Framer Motion untuk micro-interaction UI premium dan Nodemailer untuk alur kerja email otomatis.",
+          "Merancang infrastruktur Computer-Based Test (CBT) yang skalabel dengan mengkontainerisasi Moodle, Nginx, dan PostgreSQL melalui Docker, serta memvalidasi ketahanan sistem menggunakan k6 automated load testing untuk menjamin zero downtime bagi 250 pengguna bersamaan pada periode ujian puncak.",
+        ],
         current: false,
       },
-      {
-        year: "2025",
-        title: "Website Manager",
-        company: "DCF Undip 2025",
-        period: "April – Mei 2025",
-        description: "Mengelola platform registrasi berbasis Next.js dan Supabase, serta mengoptimalkan skema database untuk trafik tinggi.",
-        current: false,
-      },
+      // ── DIPERTAHANKAN: Staf Divisi Sosial (disimpan persis apa adanya) ──
       {
         year: "2024",
         title: "Staf – Divisi Sosial",
