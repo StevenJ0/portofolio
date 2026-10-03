@@ -116,7 +116,7 @@ const LandingPageView = () => {
                 </button>
 
                 <a
-                  href="/files/CV.pdf"
+                  href="/files/cv.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-outline-gold text-sm sm:text-base"
